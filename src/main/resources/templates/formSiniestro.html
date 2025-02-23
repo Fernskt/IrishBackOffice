@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace = "/fragments/head :: head"></head>
+    <body class="bg-dark text-white d-flex justify-content-center">
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+        <nav th:replace = "/fragments/navbar :: nav"></nav>
+        <main class="mt-5 p-5 col-lg-9">
+
+            <div>
+                 <div th:if="${param.exito}" class="text-center">
+               <p class="alert alert-info">Siniestro cargado Exitosamente!!</p>
+           </div>
+                <h2 class="my-3">Cargar nuevo Siniestro</h2>
+                  <p class="mb-0 text-danger" th:if="${error != null}" th:text="${error}"></p>
+                <form class="row g-3" th:action="@{/siniestros/cargar}" method="post" th:object="${siniestro}">
+                    <div class="col-md-4">
+                        <label for="numStro" class="form-label">Ingrese número de Stro.</label>
+                        <input type="number" class="form-control" id="numStro" th:field="*{numStro}" placeholder="Ej: 12345678">
+                       
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="fechaYHoraStro" class="form-label">Ingrese fecha y Hora</label>
+                        <input type="datetime-local" class="form-control" id="fechaYHoraStro" th:field="*{fechaYHoraStro}" >
+                    </div>
+                     <div class="col-md-4">
+                        <label for="accidentado" class="form-label">Accidentado</label>
+                        <select id="tipoInvestigacion" class="form-select" th:field="*{tipoInvestigacion}">
+                            <option selected value="">Seleccione</option>
+                            <option value="Tipo 1">...</option>
+                            <option value="Tipo 2">...</option>
+                             <option value="Tipo 2">...</option>
+                              </select>
+                         </div>
+                    <hr>
+                    <h4 class="my-3 text-warning">Lugar y descripción del hecho</h4>
+                    <div class="col-md-4">
+                        <label for="lugar_direccion" class="form-label">Lugar del hecho (Direccion)</label>
+                        <input type="text" class="form-control" id="lugar_direccion" th:field="*{lugar_direccion}" placeholder="Ej: Cordoba 1000">
+                      
+                    </div>
+                    <div class="col-md-3">
+                        <label for="lugar_entrecalles" class="form-label">Entre calles</label>
+                        <input type="text" class="form-control" id="lugar_entrecalles"  th:field="*{lugar_entrecalles}" placeholder="Entre Calles">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="localidad" class="form-label">Localidad</label>
+                        <input type="text" class="form-control" id="localidad" th:field="*{localidad}" placeholder="Ej: Avellaneda">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="provincia" class="form-label">Provincia</label>
+                        <select id="provincia" class="form-select" th:field="*{provincia}">
+                            <option selected value="Buenos Aires">Buenos Aires</option>
+                            <option value="Neuquén">Neuquén</option>
+                            <option value="Santa Fe">Santa Fe</option>
+                            <option value="La Pampa">La Pampa</option>
+                            <option value="Tucuman">Tucumán</option>
+                            <option value="Corrientes">Corrientes</option>
+                            <option value="Mendoza">Mendoza</option>
+                            <option value="La Rioja">La Rioja</option>
+                            <option value="Chaco">Chaco</option>
+                            <option value="Cordoba">Córdoba</option>
+                            <option value="Salta">Salta</option>
+                            <option value="Jujuy">Jujuy</option>
+                        </select>
+                    </div>
+                     <div class="mb-3">
+  <label for="mechanicaHecho" class="form-label">Mecánica del Hecho</label>
+  <textarea class="form-control" id="mechanicaHecho" rows="3" th:field="*{mechanicaHecho}" placeholder="Describa la mecánica de los hechos..."></textarea>
+</div>
+                     <hr>
+                    <h4 class="my-3 text-warning">Otros detalles</h4>
+                    <div class="col-md-2">
+                        <label for="gravedad" class="form-label">Gravedad</label>
+                        <select id="gravedad" class="form-select" th:field="*{gravedad}">
+                            <option selected value="0">Seleccione</option>
+                            <option value="Leve">Leve</option>
+                            <option value="Moderado">Moderado</option>
+                          
+                             <option value="Grave">Grave</option>
+                               <option value="Moderado">ROAM</option>
+                                 <option value="Moderado">Mortal</option>
+                              </select>
+                    </div>
+                         <div class="col-md-3">
+                        <label for="tipoInvestigacion" class="form-label">Tipo de Investigación</label>
+                        <select id="tipoInvestigacion" class="form-select" th:field="*{tipoInvestigacion}">
+                            <option selected value="">Seleccione</option>
+                            <option value="Tipo 1">In Situ</option>
+                            <option value="Tipo 2">Mixta</option>
+                             <option value="Tipo 2">Virtual</option>
+                              </select>
+                         </div>
+                        <div class="col-md-3">
+                        <label for="nombrePrestadorMedico" class="form-label">Prestador Médico</label>
+                        <input type="text" class="form-control" id="nombrePrestadorMedico" th:field="*{nombrePrestadorMedico}" placeholder="Ej: Galeno">
+                    </div>
+                        <div class="col-md-4">
+                        <label for="lesiones" class="form-label">Lesiones</label>
+                        <input type="text" class="form-control" id="lesiones" th:field="*{lesiones}" placeholder="Ingrese Lesiones">
+                    </div>
+                      <div class="mb-3">
+  <label for="patologiasInculpables" class="form-label">Patologías Inculpables</label>
+  <textarea class="form-control" id="patologiasInculpables" th:field="*{patologiasInculpables}" rows="3"  placeholder="Ingrese patologías Inculpables..."></textarea>
+</div>
+                    <div class="col-md-5">
+                        <label for="tipoStro" class="form-label">Tipo de Siniestro</label>
+                        <input type="text" class="form-control" id="tipoStro" th:field="*{tipoStro}" placeholder="Ingrese el tipo de Siniestro">
+                    </div>
+                        <div class="col-md-7">
+                        <label for="resultado" class="form-label">Resultado</label>
+                        <input type="text" class="form-control" id="resultado" th:field="*{resultado}" placeholder="Ingrese el resultado">
+                    </div>
+                    <div class="form-check form-switch col-md-4 mx-2">
+  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+  <label class="form-check-label" for="flexSwitchCheckChecked">Tiene Recupero</label>
+</div>
+                       <hr>
+                    <h4 class="text-warning">Observaciones</h4>
+                       <div class="mb-3">
+  <label for="observaciones" class="form-label"></label>
+  <textarea class="form-control" id="observaciones" th:field="*{observaciones}" rows="1"  placeholder="Ingrese observaciones... (opcional)"></textarea>
+</div>
+                  
+                    <div class="col-12">
+    <button type="submit" class="btn btn-warning px-3 float-end">Cargar Siniestro</button>
+                    </div>
+                </form>
+            </div>
+
+        </main>
+               
+    </body>
+</html>

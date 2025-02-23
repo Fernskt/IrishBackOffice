@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Irish Backoffice</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../styles.css">
+  </head>
+  <body class="bg-secondary-subtle">
+     
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+     <div th:if="${param.error}" class="text-center">
+               <p class="alert alert-danger">Usuario o contraseña inválidos</p>
+           </div>
+         <div th:if="${param.logout}" class="text-center">
+               <p class="alert alert-info">Cierre de sesión exitoso</p>
+           </div>
+       <main class="form-signin w-100 vh-100 d-flex align-items-center justify-content-center">
+  <form th:action="@{/login}" method="post"  class="w-50">
+    
+    <h1 class="h3 mb-3 fw-normal">Inicie Sesión</h1>
+
+    <div class="form-floating mb-3">
+      <input type="email" class="form-control" id="email" name="username" placeholder="name@example.com"  >
+      <label for="email">Ingrese su E-mail</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="password" class="form-control" id="contra" name="password" placeholder="Password" required>
+      <label for="contra">Ingrese Contraseña</label>
+    </div>
+
+    <div class="form-check text-start my-3">
+      <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
+      <label class="form-check-label" for="flexCheckDefault">
+        Remember me
+      </label>
+    </div>
+    <input class="btn btn-warning w-100 py-2" type="submit" id="login-submit" value="Iniciar Sesión">
+    
+    <p class="mt-5 mb-3 text-body-secondary">| Estudio <b>Irish</b> | © 2024</p>
+  </form>
+</main>
+        
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  </body>
+</html>
