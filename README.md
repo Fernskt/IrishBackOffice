@@ -117,5 +117,93 @@ El diagrama relacional contempla (entre otras) las siguientes tablas principales
 
 ## Instalación y Configuración
 
+1. **Clona el repositorio**  
+   ```bash
+   git clone https://github.com/<TU_USUARIO>/<TU_REPOSITORIO>.git
+   cd <TU_REPOSITORIO>
+   ```
 
+2. **Configura tu base de datos MySQL**
+   - Crea una base de datos, por ejemplo: `art_backoffice`
+   - Ajusta tus credenciales en el archivo `src/main/resources/application.properties (o .yml):`
 
+     
+   ```bash
+   spring.datasource.url=jdbc:mysql://localhost:3306/art_backoffice
+   spring.datasource.username=TU_USUARIO
+   spring.datasource.password=TU_PASSWORD
+   spring.jpa.hibernate.ddl-auto=update
+   ```
+
+3. **Compila y ejecuta la aplicación**
+   
+   - Desde Maven:
+     
+   ```bash
+   mvn spring-boot:run
+   ```
+
+   - O bien genera el `.jar` y ejecútalo
+  
+    ```bash
+   mvn clean package
+   java -jar target/art-backoffice-0.0.1-SNAPSHOT.jar
+   ```
+4. **Accede la aplicación**
+
+   - Por defecto, la aplicación se inicia en:
+     http://localhost:8080/
+
+## Uso
+
+1. **Inicio de sesión**
+   - Utiliza un usuario y contraseña válidos (por ejemplo, `admin / admin123`).
+  
+2. **Administrador**
+   - Gestiona la lista completa de siniestros (en gestión, vencidos, etc.).
+   - Crea, edita y elimina usuarios (analistas).
+   - Asigna siniestros a cada analista.
+   - Genera reportes y visualiza estadísticas (fechas, ART, analista, etc.).
+  
+3. **Analista Interno**
+
+   - Visualiza únicamente los siniestros asignados.
+   - Actualiza la información de cada siniestro (estado, observaciones, etc.).
+  
+4. **Reportes**
+
+   - Permite filtrar casos por **estado**, fechas, ART o analista.
+   - **Módulo de facturación** (pendiente de desarrollo).
+  
+## Seguridad
+
+   - Spring Security se encarga de la autenticación y autorización.
+   - Roles principales:
+      - `ADMIN`
+      - `ANALISTA`
+   - Los endpoints y vistas se protegen de acuerdo con el rol de cada usuario.
+
+## Estado del Proyecto y Próximos Pasos
+- **Estado Actual:** MVP en desarrollo.
+- **Próximas Mejoras:**
+   - Funcionalidad de facturación.
+   - Soporte para analistas externos.
+   - Optimización de consultas.
+   - Mejoras de UI/UX (validaciones, interfaz más intuitiva, etc.).
+ 
+## Contribuyendo
+   **¡Las contribuciones son bienvenidas!**
+
+1. Haz un **fork** del repositorio.
+2. Crea una rama descriptiva (por ejemplo: `feature/mejora-reportes`).
+3. Aplica tus cambios y actualiza la documentación si es necesario.
+4. Envía un **pull request**.
+
+## Licencia
+(C) **Hasperué Fernando, 2025**
+- *Este software es confidencial y no puede distribuirse sin autorización.*
+
+## Contacto
+- **Autor / Maintainer:** Hasperué Fernando
+- **Email:** fernando.hasperue@gmail.com
+- **LinkedIn:** https://www.linkedin.com/in/hasperue/
