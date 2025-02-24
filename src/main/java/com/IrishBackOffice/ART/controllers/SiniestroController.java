@@ -1,5 +1,4 @@
 package com.IrishBackOffice.ART.controllers;
-
 import com.IrishBackOffice.ART.entities.Siniestro;
 import com.IrishBackOffice.ART.exceptions.MyException;
 import com.IrishBackOffice.ART.iservice.SiniestroService;
@@ -15,19 +14,17 @@ public class SiniestroController {
     @Autowired
     private SiniestroService siniestroService;
 
-    // GET: Listar siniestros
-    @GetMapping("/listar")
+    
+    @GetMapping()
     public ResponseEntity<?> listarSiniestros() {
         try {
             return ResponseEntity.ok(siniestroService.listarSiniestros());
         } catch (Exception e) {
-            // Manejo de errores genérico
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body("Error al listar siniestros");
         }
     }
 
-    // GET: Obtener siniestro por ID
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerSiniestro(@PathVariable Long id) {
         try {
@@ -42,14 +39,12 @@ public class SiniestroController {
         }
     }
 
-    // POST: Crear siniestro
     @PostMapping
     public ResponseEntity<?> crearSiniestro(@RequestBody Siniestro siniestro) {
         try {
             Siniestro nuevoSiniestro = siniestroService.save(siniestro);
             return ResponseEntity.status(HttpStatus.CREATED).body(nuevoSiniestro);
         } catch (MyException ex) {
-            // Si tu excepción MyException tiene un mensaje específico, puedes retornarlo
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -67,10 +62,10 @@ public class SiniestroController {
             if (siniestroDB == null) {
                 return ResponseEntity.notFound().build();
             }
-            // Ajustas manualmente los campos que se pueden actualizar
+           
             siniestroDB.setDescripcion(siniestroActualizado.getDescripcion());
             siniestroDB.setFecha(siniestroActualizado.getFecha());
-            // etc...
+            
 
             Siniestro siniestroGuardado = siniestroService.save(siniestroDB);
             return ResponseEntity.ok(siniestroGuardado);
