@@ -1,6 +1,6 @@
-# ART Backoffice
+# Irish Backoffice
 
-**ART Backoffice** es una aplicación web desarrollada con **Java Spring Boot** y **MySQL** bajo el patrón **MVC**. Su objetivo principal es gestionar y analizar siniestros de manera eficiente, permitiendo que distintos usuarios (administrador y analistas) puedan interactuar con la información de forma segura y escalable.
+**Irish Backoffice** es una aplicación web desarrollada con **Java Spring Boot** y **MySQL** bajo el patrón **MVC**. Su objetivo principal es gestionar y analizar siniestros de manera eficiente, permitiendo que distintos usuarios (administrador y analistas) puedan interactuar con la información de forma segura y escalable.
 
 ---
 
