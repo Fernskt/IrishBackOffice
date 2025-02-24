@@ -119,8 +119,8 @@ El diagrama relacional contempla (entre otras) las siguientes tablas principales
 
 1. **Clona el repositorio**  
    ```bash
-   git clone https://github.com/<TU_USUARIO>/<TU_REPOSITORIO>.git
-   cd <TU_REPOSITORIO>
+   git clone https://github.com/Fernskt/IrishBackOffice.git
+   cd IrishBackOffice
    ```
 
 2. **Configura tu base de datos MySQL**
