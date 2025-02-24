@@ -106,7 +106,7 @@ El diagrama relacional contempla (entre otras) las siguientes tablas principales
 
 - **`siniestro`**  
   - Registra la información de cada siniestro.  
-  - Campos ejemplo: `id_stro`, `num_stro`, `fecha_ingreso`, `fecha_vencimiento`, `graveda`, etc.  
+  - Campos ejemplo: `id_stro`, `num_stro`, `fecha_ingreso`, `fecha_vencimiento`, `gravedad`, etc.  
   - Se relaciona con `art`, `usuario` (analista interno), e incluso `analista_ext`.
 
 - **`asegurado`**  
@@ -125,7 +125,7 @@ El diagrama relacional contempla (entre otras) las siguientes tablas principales
 
 2. **Configura tu base de datos MySQL**
    - Crea una base de datos, por ejemplo: `art_backoffice`
-   - Ajusta tus credenciales en el archivo `src/main/resources/application.properties (o .yml):`
+   - Ajusta tus credenciales en el archivo `src/main/resources/application.properties:`
 
      
    ```bash
