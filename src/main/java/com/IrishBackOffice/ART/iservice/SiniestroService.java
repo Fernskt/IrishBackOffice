@@ -17,4 +17,6 @@ public interface SiniestroService {
     
     public Siniestro save(Siniestro siniestro) throws MyException;
     public List <Siniestro> listarSiniestros();
+    Siniestro findById(Long id) throws MyException;  // 💡 Agregar este método
+    void delete(Siniestro siniestro) throws MyException;
 }

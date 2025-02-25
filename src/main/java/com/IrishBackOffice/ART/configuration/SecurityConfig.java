@@ -16,6 +16,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 
 /**
  *
@@ -30,14 +33,24 @@ public class SecurityConfig {
    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+            .cors(cors -> {
+                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+                CorsConfiguration config = new CorsConfiguration();
+                config.setAllowCredentials(true);
+                config.addAllowedOriginPattern("*"); // Permitir todos los orígenes
+                config.addAllowedHeader("*"); // Permitir todos los encabezados
+                config.addAllowedMethod("*"); // Permitir todos los métodos
+                source.registerCorsConfiguration("/**", config);
+                cors.configurationSource(source);
+            })
             .csrf(AbstractHttpConfigurer::disable)
             .httpBasic(Customizer.withDefaults())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))  // Cambiado a IF_REQUIRED o ALWAYS
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers( "/js/**", "/css/**", "/img/**").permitAll()
-                .requestMatchers("/").authenticated()
-                 .requestMatchers("/registro/**").hasRole("ADMINISTRADOR")
-                .anyRequest().authenticated()
+                .requestMatchers("/").permitAll()
+                 .requestMatchers("/registro/**").permitAll()
+                .anyRequest().permitAll()
             )
             .formLogin(form -> form
                 .loginPage("/login")
@@ -58,6 +71,7 @@ public class SecurityConfig {
 
         return httpSecurity.build();
     }
+//    
 //    
 //    @Bean
 //    public AuthenticationManager authenticationManager( AuthenticationConfiguration authenticationConfiguration) throws Exception{
