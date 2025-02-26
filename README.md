@@ -68,25 +68,7 @@ El uso de **Spring Boot** hace que sea modular, fácilmente escalable y con inye
 
 ---
 
-## Modelo de Datos
 
-En el diagrama de la base de datos se contemplan las siguientes tablas principales:
-
-- **`art`**  
-  Registra las distintas Aseguradoras de Riesgos de Trabajo.
-  
-- **`asegurado`**  
-  Información de la persona asegurada o accidentada (CUIT, DNI, nombre, empresa, etc.).  
-  
-- **`analista_ext`**  
-  Datos de analistas externos (nombre, apellido, localidad, DNI).  
-
-- **`usuario`**  
-  Almacena los datos de los **usuarios internos** (Administrador o Analista), incluyendo `rol`, `email`, `contra`, etc.  
-
-- **`siniestro`**  
-  Núcleo de la aplicación. Contiene la información de cada siniestro (fechas, gravedad, observaciones).  
-  Relacionada con `art` (quién provee la cobertura) y `usuario` (analista asignado).
 
 ## Modelo de Datos
 
