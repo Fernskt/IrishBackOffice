@@ -23,7 +23,6 @@ public class SiniestroServiceImpl implements SiniestroService {
         siniestro.setFechaIngreso(fechaIngreso);
         siniestro.setFecha_vencimiento(fechaIngreso.plusDays(10));
 
-        // Retornamos directamente el objeto guardado por si queremos usarlo
         return siniestroRepository.save(siniestro);
     }
 
@@ -34,23 +33,20 @@ public class SiniestroServiceImpl implements SiniestroService {
 
     @Override
     public Siniestro findById(Long id) throws MyException {
-        // Busca por ID o lanza excepción si no existe
+        
         return siniestroRepository.findById(id)
                 .orElseThrow(() -> new MyException("Siniestro no encontrado con ID: " + id));
     }
 
     @Override
     public void delete(Siniestro siniestro) throws MyException {
-        // Valida que el Siniestro y su ID no sean nulos antes de eliminar
+       
         if (siniestro == null || siniestro.getIdStro() == null) {
             throw new MyException("El siniestro o su ID no pueden ser nulos para eliminar.");
         }
         siniestroRepository.delete(siniestro);
     }
 
-    /**
-     * Valida campos obligatorios y otros criterios de negocio.
-     */
     private void validaciones(Siniestro siniestro) throws MyException {
         if (siniestro.getNumStro() == 0) {
             throw new MyException("El número de siniestro no puede ser 0 o estar vacío");
