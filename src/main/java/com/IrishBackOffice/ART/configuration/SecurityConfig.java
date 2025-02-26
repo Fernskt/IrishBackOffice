@@ -3,9 +3,11 @@ package com.IrishBackOffice.ART.configuration;
 import com.IrishBackOffice.ART.iservice.UsuarioService;
 import com.IrishBackOffice.ART.jwt.JwtAuthenticationFilter;
 import com.IrishBackOffice.ART.jwt.JwtAuthorizationFilter;
+import com.IrishBackOffice.ART.service.UsuarioServiceImpl;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,6 +26,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+    
+    @Autowired UsuarioServiceImpl usuarioService;
 
     /**
      * @param usuarioService
@@ -80,7 +84,7 @@ public class SecurityConfig {
         Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
         http
-                .addFilter(new JwtAuthenticationFilter(authManager, key))
+                .addFilter(new JwtAuthenticationFilter(authManager, key, usuarioService))
                 .addFilter(new JwtAuthorizationFilter(authManager, key));
 
         return http.build();

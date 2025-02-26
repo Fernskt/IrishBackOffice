@@ -31,13 +31,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
-   private final UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     // Inyección por constructor de repositorio y encoder
     @Autowired
     public UsuarioServiceImpl(UsuarioRepository usuarioRepository,
-                              BCryptPasswordEncoder passwordEncoder) {
+            BCryptPasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -71,10 +71,27 @@ public class UsuarioServiceImpl implements UsuarioService {
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().name()))
         );
     }
-    
+
+    @Override
+    public UsuarioDTO getUser(String email) {
+         System.out.println("Aver Aver" + email);
+        Usuario usuario = usuarioRepository.findByEmail(email);
+       
+        if (usuario == null) {
+            return null;
+        }
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setDni(usuario.getDni());
+        usuarioDTO.setNombre(usuario.getNombre());
+        usuarioDTO.setApellido(usuario.getApellido());
+        usuarioDTO.setEmail(usuario.getEmail());
+        usuarioDTO.setRol(usuario.getRol());
+        return usuarioDTO;
+    }
+
     @Override
     public List<UsuarioDTO> listarUsuarios() {
-        
+
         List<Usuario> usuarios = usuarioRepository.findAll();
         return usuarios.stream()
                 .map(usuario -> new UsuarioDTO(
@@ -89,7 +106,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     public void validaciones(UsuarioRegistroDTO registroDTO) throws MyException {
         List<UsuarioDTO> usuarios = listarUsuarios();
-        
+
         if (registroDTO.getDni() == null) {
             throw new MyException("El DNI no puede ser nulo");
         }
@@ -112,15 +129,16 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new MyException("La contraseña debe tener más de 8 caracteres");
         }
         for (UsuarioDTO usuario : usuarios) {
-            
+
             if (Objects.equals(registroDTO.getDni(), usuario.getDni())) {
                 throw new MyException("Ya estás registrado con ese DNI");
             }
-            
+
             if (registroDTO.getEmail().equals(usuario.getEmail())) {
                 throw new MyException("Nombre de Usuario ya existe");
-            }            
+            }
         }
-        
+
     }
+
 }

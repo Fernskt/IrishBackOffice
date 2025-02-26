@@ -1,5 +1,7 @@
 package com.IrishBackOffice.ART.jwt;
 
+import com.IrishBackOffice.ART.dto.UsuarioDTO;
+import com.IrishBackOffice.ART.service.UsuarioServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -10,6 +12,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.security.Key;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,10 +24,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final AuthenticationManager authenticationManager;
     private final Key key;
+    private final UsuarioServiceImpl usuarioService;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, Key key) {
+   public JwtAuthenticationFilter(AuthenticationManager authenticationManager, Key key, UsuarioServiceImpl usuarioService) {
         this.authenticationManager = authenticationManager;
         this.key = key;
+        this.usuarioService = usuarioService;
         setFilterProcessesUrl("/api/auth/login");
     }
 
@@ -53,10 +59,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .setExpiration(new Date(System.currentTimeMillis() + 864_000_00))
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
+        
+        UsuarioDTO usuarioDTO = usuarioService.getUser(authResult.getName());
 
-        response.addHeader("Authorization", "Bearer " + token);
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("token", token);
+        responseBody.put("usuario", usuarioDTO);
+
         response.setContentType("application/json");
-        response.getWriter().write("{\"token\": \"" + token + "\"}");
+        String jsonResponse = new ObjectMapper().writeValueAsString(responseBody);
+        response.getWriter().write(jsonResponse);
+
     }
 
     @Override

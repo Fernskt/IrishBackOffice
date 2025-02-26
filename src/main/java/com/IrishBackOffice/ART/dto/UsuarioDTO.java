@@ -5,6 +5,7 @@
  */
 package com.IrishBackOffice.ART.dto;
 
+import com.IrishBackOffice.ART.entities.Usuario;
 import com.IrishBackOffice.ART.enums.Rol;
 
 /**
