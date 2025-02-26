@@ -18,9 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Pc
  */
 public interface UsuarioService extends UserDetailsService {
+    
     @Transactional
-    public Usuario save(UsuarioRegistroDTO registroDTO) throws MyException;
+    Usuario save(UsuarioRegistroDTO registroDTO) throws MyException;
     
-   public List<UsuarioDTO> listarUsuarios();
-    
+    List<UsuarioDTO> listarUsuarios();
+    Usuario editarUsuario(Long id, UsuarioRegistroDTO registroDTO);
+    @Transactional
+    boolean eliminarUsuario(Long id);  // Nuevo método para eliminar usuario
 }

@@ -8,19 +8,32 @@ package com.IrishBackOffice.ART.dto;
 import com.IrishBackOffice.ART.entities.Siniestro;
 import com.IrishBackOffice.ART.enums.Rol;
 import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  *
  * @author Pc
  */
 public class UsuarioRegistroDTO {
 
+    @JsonProperty("dni")
     private Long dni;
+    
+    @JsonProperty("nombre")
     private String nombre;
+    
+    @JsonProperty("apellido")
     private String apellido;
+    
+    @JsonProperty("rol")
     private Rol rol;
+    
+    @JsonProperty("email")
     private String email;
+    
+    @JsonProperty("contra")
     private String contra;
+    
+    @JsonProperty("siniestros")
     private List<Siniestro> siniestros;
     
     

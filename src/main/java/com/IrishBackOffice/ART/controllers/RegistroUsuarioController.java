@@ -10,19 +10,12 @@ import com.IrishBackOffice.ART.enums.Rol;
 import com.IrishBackOffice.ART.exceptions.MyException;
 import com.IrishBackOffice.ART.iservice.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-/**
- *
- * @author Pc
- */
-@Controller
-@RequestMapping("/registro")
+@RestController
+@RequestMapping("/api/registro")
 public class RegistroUsuarioController {
     
     @Autowired
@@ -39,20 +32,17 @@ public class RegistroUsuarioController {
     }
     
     @GetMapping
-    public String mostrarFormRegistro(){
-        return "registro";
+    public ResponseEntity<String> mostrarFormRegistro(){
+        return new ResponseEntity<>("Registro de usuario", HttpStatus.OK);
     }
     
     @PostMapping
-    public String registrarUsuario(@ModelAttribute("usuario") UsuarioRegistroDTO usuarioRegistroDTO, ModelMap model) {
-        
+    public ResponseEntity<?> registrarUsuario(@RequestBody UsuarioRegistroDTO usuarioRegistroDTO) {
         try {
             usuarioService.save(usuarioRegistroDTO);
+            return new ResponseEntity<>("Usuario registrado con éxito", HttpStatus.CREATED);
         } catch (MyException ex) {
-            model.put("error", ex.getMessage());
-            return "registro";
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return "redirect:/usuario/listar?exito";
     }
-    
 }
