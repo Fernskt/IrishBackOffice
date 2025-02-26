@@ -124,12 +124,12 @@ El diagrama relacional contempla (entre otras) las siguientes tablas principales
    ```
 
 2. **Configura tu base de datos MySQL**
-   - Crea una base de datos, por ejemplo: `art_backoffice`
+   - Crea una base de datos con el nombre: `irish_backoffice`
    - Ajusta tus credenciales en el archivo `src/main/resources/application.properties:`
 
      
    ```bash
-   spring.datasource.url=jdbc:mysql://localhost:3306/art_backoffice
+   spring.datasource.url=jdbc:mysql://localhost:3306/irish_backoffice
    spring.datasource.username=TU_USUARIO
    spring.datasource.password=TU_PASSWORD
    spring.jpa.hibernate.ddl-auto=update
