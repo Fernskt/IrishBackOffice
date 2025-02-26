@@ -117,13 +117,45 @@ El diagrama relacional contempla (entre otras) las siguientes tablas principales
 
 ## Instalación y Configuración
 
-1. **Clona el repositorio**  
+Para ejecutar **Irish Backoffice** en tu entorno local, sigue los pasos detallados a continuación.
+
+1. **Requisitos Previos**
+
+
+    Antes de comenzar, asegúrate de tener instaladas las siguientes herramientas en tu equipo:  
+
+
+  - **Java 17:** Es necesario para ejecutar la aplicación.
+  
+     - Puedes descargarlo desde [Oracle](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) o [Adoptium](https://adoptium.net/)
+     
+  - **MySQL:** Base de datos utilizada por la aplicación.
+  
+     - Descarga desde [MySQL Community](https://dev.mysql.com/downloads/mysql/)
+     
+  - **MySQL Workbench:** Herramienta gráfica para administrar bases de datos MySQL.
+  
+     - Descarga desde [MySQL Workbench](https://dev.mysql.com/downloads/workbench/)
+     
+  - **NetBeans (o IntelliJ/Eclipse):** Editor recomendado para trabajar con Java y Spring Boot.
+  
+     - Descarga NetBeans desde [Apache NetBeans](https://netbeans.apache.org/download/index.html)
+
+
+     
+  > Si ya tienes estas herramientas instaladas, verifica que están correctamente configuradas ejecutando java `-version`, `mvn -version`, y `mysql --version en la terminal`.
+
+
+
+2. **Clona el repositorio**
+
+    Abre una terminal y ejecuta los siguientes comandos para obtener el código fuente:
    ```bash
    git clone https://github.com/Fernskt/IrishBackOffice.git
    cd IrishBackOffice
    ```
 
-2. **Configura tu base de datos MySQL**
+3. **Configura tu base de datos MySQL**
    - Crea una base de datos con el nombre: `irish_backoffice`
    - Ajusta tus credenciales en el archivo `src/main/resources/application.properties:`
 
@@ -134,8 +166,10 @@ El diagrama relacional contempla (entre otras) las siguientes tablas principales
    spring.datasource.password=TU_PASSWORD
    spring.jpa.hibernate.ddl-auto=update
    ```
+  Si no estás seguro de tu usuario y contraseña, usa root como usuario y deja la contraseña en blanco si estás en un entorno local por defecto.
 
-3. **Compila y ejecuta la aplicación**
+  
+4. **Compila y ejecuta la aplicación**
    
    - Desde Maven:
      
@@ -149,10 +183,29 @@ El diagrama relacional contempla (entre otras) las siguientes tablas principales
    mvn clean package
    java -jar target/art-backoffice-0.0.1-SNAPSHOT.jar
    ```
-4. **Accede la aplicación**
+
+  Si aparece un error indicando que `mvn` no está reconocido, verifica que Maven esté correctamente instalado y configurado en tu `PATH`.
+    
+5. **Accede la aplicación**
 
    - Por defecto, la aplicación se inicia en:
      http://localhost:8080/
+
+## Solución de Problemas
+
+
+  Si encuentras errores al ejecutar la aplicación, revisa lo siguiente:
+
+- **Error:** Java no está instalado o no es la versión correcta
+  - Ejecuta java -version y asegúrate de que sea Java 17.  
+    
+- **Error:** Base de datos no encontrada o conexión fallida
+  - Asegúrate de que MySQL esté corriendo y que las credenciales sean correctas.  
+ 
+- **Error:** Maven no reconocido
+  - Verifica que Maven esté instalado y configurado en tu PATH.  
+ 
+    
 
 ## Uso
 
