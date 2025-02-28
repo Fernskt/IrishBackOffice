@@ -8,18 +8,15 @@ package com.IrishBackOffice.ART.service;
 import com.IrishBackOffice.ART.dto.UsuarioDTO;
 import com.IrishBackOffice.ART.dto.UsuarioRegistroDTO;
 import com.IrishBackOffice.ART.entities.Usuario;
-import com.IrishBackOffice.ART.enums.Rol;
 import com.IrishBackOffice.ART.exceptions.MyException;
 
 import com.IrishBackOffice.ART.iservice.UsuarioService;
 import com.IrishBackOffice.ART.repositories.UsuarioRepository;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,43 +30,68 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
-    
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+
     private final UsuarioRepository usuarioRepository;
-    
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    // Inyección por constructor de repositorio y encoder
     @Autowired
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository,
+            BCryptPasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
-        
+        this.passwordEncoder = passwordEncoder;
     }
-    
+
     @Override
     public Usuario save(UsuarioRegistroDTO registroDTO) throws MyException {
-        
         validaciones(registroDTO);
-        
-        Usuario usuario = new Usuario(registroDTO.getRol(), registroDTO.getEmail().toLowerCase(), passwordEncoder.encode(registroDTO.getContra()), registroDTO.getSiniestros(), registroDTO.getDni(), registroDTO.getNombre(), registroDTO.getApellido());
-        
+
+        Usuario usuario = new Usuario(
+                registroDTO.getRol(),
+                registroDTO.getEmail().toLowerCase(),
+                passwordEncoder.encode(registroDTO.getContra()),
+                registroDTO.getSiniestros(),
+                registroDTO.getDni(),
+                registroDTO.getNombre(),
+                registroDTO.getApellido()
+        );
+
         return usuarioRepository.save(usuario);
     }
-    
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByEmail(username);
         if (usuario == null) {
             throw new UsernameNotFoundException("Usuario o contraseña incorrectos");
         }
-        return new User(usuario.getEmail().toLowerCase(), usuario.getContra(), mapearRol(usuario.getRol()));
+        return new User(
+                usuario.getEmail().toLowerCase(),
+                usuario.getContra(),
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().name()))
+        );
     }
-    
-    private Collection<? extends GrantedAuthority> mapearRol(Rol rol) {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + rol.name()));
+
+    @Override
+    public UsuarioDTO getUser(String email) {
+         System.out.println("Aver Aver" + email);
+        Usuario usuario = usuarioRepository.findByEmail(email);
+       
+        if (usuario == null) {
+            return null;
+        }
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setDni(usuario.getDni());
+        usuarioDTO.setNombre(usuario.getNombre());
+        usuarioDTO.setApellido(usuario.getApellido());
+        usuarioDTO.setEmail(usuario.getEmail());
+        usuarioDTO.setRol(usuario.getRol());
+        return usuarioDTO;
     }
-    
+
     @Override
     public List<UsuarioDTO> listarUsuarios() {
-        
+
         List<Usuario> usuarios = usuarioRepository.findAll();
         return usuarios.stream()
                 .map(usuario -> new UsuarioDTO(
@@ -84,7 +106,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     public void validaciones(UsuarioRegistroDTO registroDTO) throws MyException {
         List<UsuarioDTO> usuarios = listarUsuarios();
-        
+
         if (registroDTO.getDni() == null) {
             throw new MyException("El DNI no puede ser nulo");
         }
@@ -107,15 +129,16 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new MyException("La contraseña debe tener más de 8 caracteres");
         }
         for (UsuarioDTO usuario : usuarios) {
-            
+
             if (Objects.equals(registroDTO.getDni(), usuario.getDni())) {
                 throw new MyException("Ya estás registrado con ese DNI");
             }
-            
+
             if (registroDTO.getEmail().equals(usuario.getEmail())) {
                 throw new MyException("Nombre de Usuario ya existe");
-            }            
+            }
         }
-        
+
     }
+
 }

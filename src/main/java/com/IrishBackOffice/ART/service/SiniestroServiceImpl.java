@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.IrishBackOffice.ART.service;
 
 import com.IrishBackOffice.ART.entities.Siniestro;
@@ -14,66 +9,74 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author Pc
- */
 @Service
-public class SiniestroServiceImpl implements SiniestroService{
-    
+public class SiniestroServiceImpl implements SiniestroService {
+
     @Autowired
-    SiniestroRepository siniestroRepository;
-    
+    private SiniestroRepository siniestroRepository;
+
     @Override
-    public Siniestro save(Siniestro siniestro) throws MyException{
-        
+    public Siniestro save(Siniestro siniestro) throws MyException {
         validaciones(siniestro);
-       
+
         LocalDateTime fechaIngreso = LocalDateTime.now();
         siniestro.setFechaIngreso(fechaIngreso);
         siniestro.setFecha_vencimiento(fechaIngreso.plusDays(10));
-      
-        siniestroRepository.save(siniestro);
-        return siniestro;
+
+        return siniestroRepository.save(siniestro);
     }
 
     @Override
-    public List <Siniestro> listarSiniestros() {
-        List <Siniestro> siniestros = siniestroRepository.findAll();
-        return siniestros;
+    public List<Siniestro> listarSiniestros() {
+        return siniestroRepository.findAll();
     }
-    
-    public void validaciones(Siniestro siniestro) throws MyException{
-         if(siniestro.getNumStro() == 0){
-            throw new MyException("El num de siniestro no puede ser 0 o estar vacío");
+
+    @Override
+    public Siniestro findById(Long id) throws MyException {
+        
+        return siniestroRepository.findById(id)
+                .orElseThrow(() -> new MyException("Siniestro no encontrado con ID: " + id));
+    }
+
+    @Override
+    public void delete(Siniestro siniestro) throws MyException {
+       
+        if (siniestro == null || siniestro.getIdStro() == null) {
+            throw new MyException("El siniestro o su ID no pueden ser nulos para eliminar.");
         }
-        if(siniestro.getLugar_direccion().isEmpty()){
-            throw new MyException("Lugar del hecho no puede ser vacío");
+        siniestroRepository.delete(siniestro);
+    }
+
+    private void validaciones(Siniestro siniestro) throws MyException {
+        if (siniestro.getNumStro() == 0) {
+            throw new MyException("El número de siniestro no puede ser 0 o estar vacío");
         }
-        if(siniestro.getLugar_entrecalles().isEmpty()){
+        if (siniestro.getLugar_direccion().isEmpty()) {
+            throw new MyException("El lugar del hecho no puede estar vacío");
+        }
+        if (siniestro.getLugar_entrecalles().isEmpty()) {
             throw new MyException("Complete las entre calles");
         }
-        if(siniestro.getLocalidad().isEmpty()){
-            throw new MyException("Localidad no puede estar vacío");
+        if (siniestro.getLocalidad().isEmpty()) {
+            throw new MyException("La localidad no puede estar vacía");
         }
-        if(siniestro.getMechanicaHecho().isEmpty()){
-            throw new MyException("Mecánica del hecho, no puede estar vacío");
+        if (siniestro.getMechanicaHecho().isEmpty()) {
+            throw new MyException("La mecánica del hecho no puede estar vacía");
         }
-        if(siniestro.getGravedad().equals("0") || siniestro.getGravedad().isEmpty()){
+        if (siniestro.getGravedad().equals("0") || siniestro.getGravedad().isEmpty()) {
             throw new MyException("Debe seleccionar la gravedad");
         }
-        if(siniestro.getTipoInvestigacion().equalsIgnoreCase("0") || siniestro.getTipoInvestigacion().isEmpty()){
-            throw new MyException("Debe seleccionar tipo de investigación");
+        if (siniestro.getTipoInvestigacion().equalsIgnoreCase("0") || siniestro.getTipoInvestigacion().isEmpty()) {
+            throw new MyException("Debe seleccionar el tipo de investigación");
         }
-        if(siniestro.getLesiones().isEmpty() || siniestro.getLesiones() == null){
-            throw new MyException("Debe completar Lesiones");
+        if (siniestro.getLesiones() == null || siniestro.getLesiones().isEmpty()) {
+            throw new MyException("Debe completar las lesiones");
         }
-        if(siniestro.getPatologiasInculpables().isEmpty() || siniestro.getPatologiasInculpables() == null){
-            throw new MyException("Debe ingresar Patologías inculpables");
+        if (siniestro.getPatologiasInculpables() == null || siniestro.getPatologiasInculpables().isEmpty()) {
+            throw new MyException("Debe ingresar las patologías inculpables");
         }
-        if(siniestro.getTipoStro().isEmpty() || siniestro.getTipoStro() == null){
-            throw new MyException("Debe ingresar el tipo de Siniestro");
+        if (siniestro.getTipoStro() == null || siniestro.getTipoStro().isEmpty()) {
+            throw new MyException("Debe ingresar el tipo de siniestro");
         }
     }
-    
 }

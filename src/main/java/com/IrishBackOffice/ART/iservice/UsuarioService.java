@@ -22,5 +22,7 @@ public interface UsuarioService extends UserDetailsService {
     public Usuario save(UsuarioRegistroDTO registroDTO) throws MyException;
     
    public List<UsuarioDTO> listarUsuarios();
+   
+   public UsuarioDTO getUser(String email);
     
 }

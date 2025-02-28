@@ -1,53 +1,95 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.IrishBackOffice.ART.controllers;
-
 import com.IrishBackOffice.ART.entities.Siniestro;
 import com.IrishBackOffice.ART.exceptions.MyException;
 import com.IrishBackOffice.ART.iservice.SiniestroService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-/**
- *
- * @author Pc
- */
-@Controller
+@RestController
 @RequestMapping("/siniestros")
 public class SiniestroController {
-    
+
     @Autowired
-    SiniestroService siniestroService;
+    private SiniestroService siniestroService;
+
     
-    @GetMapping
-    public String siniestros(Model model) {
-        model.addAttribute("siniestro", new Siniestro());
-        return "formSiniestro";
-    }
-    
-    @GetMapping("/listar")
-    public String listarSiniestros(Model model){
-      model.addAttribute("siniestros", siniestroService.listarSiniestros())  ;
-        return "listarSiniestros";
-    }
-    
-    @PostMapping("/cargar")
-    public String cargarSiniestro(@ModelAttribute("siniestro") Siniestro siniestro, ModelMap model){
+    @GetMapping()
+    public ResponseEntity<?> listarSiniestros() {
         try {
-            siniestroService.save(siniestro);
-        } catch (MyException ex) {
-            model.put("error", ex.getMessage());
-            return "formSiniestro";
+            return ResponseEntity.ok(siniestroService.listarSiniestros());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("Error al listar siniestros");
         }
-          return "redirect:/siniestros?exito";
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerSiniestro(@PathVariable Long id) {
+        try {
+            Siniestro siniestro = siniestroService.findById(id);
+            if (siniestro == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(siniestro);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("Error al obtener el siniestro");
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<?> crearSiniestro(@RequestBody Siniestro siniestro) {
+        try {
+            Siniestro nuevoSiniestro = siniestroService.save(siniestro);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoSiniestro);
+        } catch (MyException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("Error al crear el siniestro");
+        }
+    }
+
+    // PUT: Actualizar siniestro
+   /* @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarSiniestro(
+            @PathVariable Long id,
+            @RequestBody Siniestro siniestroActualizado) {
+        try {
+            Siniestro siniestroDB = siniestroService.findById(id);
+            if (siniestroDB == null) {
+                return ResponseEntity.notFound().build();
+            }
+           
+            siniestroDB.setDescripcion(siniestroActualizado.getDescripcion());
+            siniestroDB.setFecha(siniestroActualizado.getFecha());
+            
+
+            Siniestro siniestroGuardado = siniestroService.save(siniestroDB);
+            return ResponseEntity.ok(siniestroGuardado);
+        } catch (MyException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("Error al actualizar el siniestro");
+        }
+    }*/
+
+    // DELETE: Eliminar siniestro
+      @DeleteMapping("/{id}")
+  public ResponseEntity<?> eliminarSiniestro(@PathVariable Long id) {
+        try {
+            Siniestro siniestro = siniestroService.findById(id);
+            if (siniestro == null) {
+                return ResponseEntity.notFound().build();
+            }
+            siniestroService.delete(siniestro);
+            return ResponseEntity.noContent().build(); // 204 No Content
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("Error al eliminar el siniestro");
+        }
+    } 
 }
