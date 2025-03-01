@@ -9,16 +9,15 @@ import com.IrishBackOffice.ART.enums.Rol;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import java.util.UUID;
 
 /**
  *
  * @author Pc
  */
 public class UsuarioDTO {
-
+    private UUID id;
    @NotNull(message = "El DNI es obligatorio")
    @Positive(message = "Debe ser mayor que 0")
     private Long dni;
@@ -39,13 +38,21 @@ public class UsuarioDTO {
     public UsuarioDTO() {
     }
 
-    public UsuarioDTO(Long dni, String nombre, String apellido, Rol rol, String email) {
+    public UsuarioDTO(UUID id,Long dni, String nombre, String apellido, Rol rol, String email) {
+        this.id = id;
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
         this.rol = rol;
         this.email = email;
     }
+    public UUID getId() {
+        return id;
+    }
+     public void setId(UUID id) {
+        this.id = id;
+    }
+
 
     public Long getDni() {
         return dni;

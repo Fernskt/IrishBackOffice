@@ -110,6 +110,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         List<Usuario> usuarios = usuarioRepository.findAll();
         return usuarios.stream()
                 .map(usuario -> new UsuarioDTO(
+                usuario.getId(),
                 usuario.getDni(),
                 usuario.getNombre(),
                 usuario.getApellido(),
