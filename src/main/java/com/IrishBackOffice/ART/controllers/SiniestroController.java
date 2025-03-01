@@ -33,7 +33,7 @@ public class SiniestroController {
                 return ResponseEntity.notFound().build();
             }
             return ResponseEntity.ok(siniestro);
-        } catch (Exception e) {
+        } catch (MyException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body("Error al obtener el siniestro");
         }
@@ -87,7 +87,7 @@ public class SiniestroController {
             }
             siniestroService.delete(siniestro);
             return ResponseEntity.noContent().build(); // 204 No Content
-        } catch (Exception e) {
+        } catch (MyException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body("Error al eliminar el siniestro");
         }
