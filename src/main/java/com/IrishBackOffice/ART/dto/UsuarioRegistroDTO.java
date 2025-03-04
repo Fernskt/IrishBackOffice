@@ -8,6 +8,7 @@ package com.IrishBackOffice.ART.dto;
 import com.IrishBackOffice.ART.entities.Siniestro;
 import com.IrishBackOffice.ART.enums.Rol;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -28,7 +29,7 @@ public class UsuarioRegistroDTO {
     @NotEmpty(message = "El apellido es obligatorio")
     private String apellido;
     
-    @NotNull(message = "El rol no puede ser nulo")
+    @NotBlank(message = "El rol no puede ser nulo")
     private Rol rol;
     
     @NotEmpty(message = "El email es obligatorio")

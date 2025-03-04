@@ -55,7 +55,13 @@ public class UsuarioController {
     }
 
     @PostMapping("/registrar")
-    public ResponseEntity<?> registrarUsuario(@RequestBody UsuarioRegistroDTO usuarioRegistroDTO) {
+    public ResponseEntity<?> registrarUsuario(@RequestBody @Valid UsuarioRegistroDTO usuarioRegistroDTO, BindingResult result) {
+          if (result.hasErrors()) {
+            String errores = result.getFieldErrors().stream()
+                    .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            return ResponseEntity.badRequest().body(errores);
+        }
         try {
             usuarioService.save(usuarioRegistroDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body("El registro ha sido exitoso!");
