@@ -1,10 +1,5 @@
 package com.IrishBackOffice.ART.dto;
 
-import com.IrishBackOffice.ART.entities.Art;
-import com.IrishBackOffice.ART.entities.Asegurado;
-import com.IrishBackOffice.ART.entities.Auditor;
-import com.IrishBackOffice.ART.entities.Trabajador;
-import com.IrishBackOffice.ART.entities.Usuario;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
