@@ -17,6 +17,7 @@ import com.IrishBackOffice.ART.repositories.TrabajadorRepository;
 import com.IrishBackOffice.ART.repositories.UsuarioRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -130,6 +131,20 @@ public class SiniestroServiceImpl implements SiniestroService {
             throw new MyException("El siniestro o su ID no pueden ser nulos para eliminar.");
         }
         siniestroRepository.delete(siniestro);
+    }
+    
+      @Override
+    public void asignarAnalista(Long id, UUID analistaId) throws MyException {
+        Siniestro sin = siniestroRepository.findById(id)
+            .orElseThrow(() -> new MyException("No existe siniestro " + id));
+        if (analistaId != null) {
+            Usuario u = usuarioRepository.findById(analistaId)
+                .orElseThrow(() -> new MyException("Analista no encontrado " + analistaId));
+            sin.setAnalista(u);
+        } else {
+            sin.setAnalista(null);
+        }
+        siniestroRepository.save(sin);
     }
 
     private void validaciones(Siniestro siniestro) throws MyException {

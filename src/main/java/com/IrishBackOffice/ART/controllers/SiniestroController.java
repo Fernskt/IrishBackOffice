@@ -4,6 +4,8 @@ import com.IrishBackOffice.ART.entities.Siniestro;
 import com.IrishBackOffice.ART.exceptions.MyException;
 import com.IrishBackOffice.ART.iservice.SiniestroService;
 import jakarta.validation.Valid;
+import java.util.Map;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,6 +71,16 @@ public class SiniestroController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body("Error al actualizar el siniestro");
         }
+    }
+    
+     @PatchMapping("/{id}/analista")
+    public ResponseEntity<Void> asignarAnalista(
+        @PathVariable Long id,
+        @RequestBody Map<String, UUID> body
+    ) throws MyException {
+        UUID analistaId = body.get("analistaId");  // null o UUID
+        siniestroService.asignarAnalista(id, analistaId);
+        return ResponseEntity.noContent().build();
     }
 
     // DELETE: Eliminar siniestro
