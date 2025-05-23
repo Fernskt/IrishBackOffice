@@ -60,8 +60,8 @@ public class Siniestro {
     @OneToOne(mappedBy = "stro")
      @JoinColumn(name = "idAsegurado")
     private Asegurado asegurado;
-    @OneToOne(mappedBy = "siniestro")
-     @JoinColumn(name = "idTrabajador")
+    @OneToOne
+    @JoinColumn(name = "id_trabajador")
     private Trabajador trabajador;
 
     public Siniestro() {

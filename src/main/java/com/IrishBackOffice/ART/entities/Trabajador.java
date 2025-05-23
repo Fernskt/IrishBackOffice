@@ -26,9 +26,9 @@ public class Trabajador extends Persona {
     private int cp;
     private String localidad;
     private String provincia;
-     @OneToOne
-    @JoinColumn(name = "idStro")
+    @OneToOne(mappedBy = "trabajador")
     private Siniestro siniestro;
+
 
     public Trabajador() {
     }
