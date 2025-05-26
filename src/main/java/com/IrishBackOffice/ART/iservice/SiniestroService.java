@@ -9,7 +9,7 @@ import java.util.UUID;
 public interface SiniestroService {
     
     // Guarda un nuevo siniestro
-    Siniestro save(Siniestro siniestro) throws MyException;
+    Siniestro save(SiniestroDTO siniestroDTO) throws MyException;
     
     // Lista todos los siniestros
     List<Siniestro> listarSiniestros();

@@ -44,9 +44,9 @@ public class SiniestroController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crearSiniestro(@RequestBody Siniestro siniestro) {
+    public ResponseEntity<?> crearSiniestro(@RequestBody SiniestroDTO siniestroDTO) {
         try {
-            Siniestro nuevoSiniestro = siniestroService.save(siniestro);
+            Siniestro nuevoSiniestro = siniestroService.save(siniestroDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(nuevoSiniestro);
         } catch (MyException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());

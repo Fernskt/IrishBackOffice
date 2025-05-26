@@ -5,6 +5,7 @@
  */
 package com.IrishBackOffice.ART.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +28,7 @@ public class Art {
     private String apellidoAnalista;
 
     @OneToMany(mappedBy = "art")
+    @JsonIgnore
     private List<Siniestro> siniestros;
 
     public Art() {
