@@ -6,6 +6,7 @@
 package com.IrishBackOffice.ART.entities;
 
 import com.IrishBackOffice.ART.enums.Rol;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,6 +30,7 @@ public class Usuario extends Persona {
     @Column(nullable = false)
     private String contra;
     @OneToMany(mappedBy = "analista", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Siniestro> siniestros;
 
     public Usuario() {

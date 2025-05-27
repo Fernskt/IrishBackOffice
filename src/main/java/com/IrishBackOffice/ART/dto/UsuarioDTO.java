@@ -5,31 +5,54 @@
  */
 package com.IrishBackOffice.ART.dto;
 
-import com.IrishBackOffice.ART.entities.Usuario;
 import com.IrishBackOffice.ART.enums.Rol;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import java.util.UUID;
 
 /**
  *
  * @author Pc
  */
 public class UsuarioDTO {
-
+    private UUID id;
+   @NotNull(message = "El DNI es obligatorio")
+   @Positive(message = "Debe ser mayor que 0")
     private Long dni;
+    
+    @NotEmpty(message = "El nombre es obligatorio")
     private String nombre;
+    
+    @NotEmpty(message = "El apellido es obligatorio")
     private String apellido;
+    
+    @NotNull(message = "El rol no puede ser nulo")
     private Rol rol;
+    
+    @NotEmpty(message = "El email es obligatorio")
+    @Email(message = "El email debe tener un formato válido")
     private String email;
 
     public UsuarioDTO() {
     }
 
-    public UsuarioDTO(Long dni, String nombre, String apellido, Rol rol, String email) {
+    public UsuarioDTO(UUID id,Long dni, String nombre, String apellido, Rol rol, String email) {
+        this.id = id;
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
         this.rol = rol;
         this.email = email;
     }
+    public UUID getId() {
+        return id;
+    }
+     public void setId(UUID id) {
+        this.id = id;
+    }
+
 
     public Long getDni() {
         return dni;

@@ -15,6 +15,7 @@ import com.IrishBackOffice.ART.repositories.UsuarioRepository;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -34,7 +35,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    // Inyección por constructor de repositorio y encoder
     @Autowired
     public UsuarioServiceImpl(UsuarioRepository usuarioRepository,
             BCryptPasswordEncoder passwordEncoder) {
@@ -60,6 +60,21 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    public Usuario editarUsuario(UUID id, UsuarioDTO usuarioDetails) throws MyException {
+        
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new MyException("Usuario no encontrado con id: " + id));
+
+        usuario.setRol(usuarioDetails.getRol());
+        usuario.setNombre(usuarioDetails.getNombre());
+        usuario.setApellido(usuarioDetails.getApellido());
+        usuario.setEmail(usuarioDetails.getEmail());
+        usuario.setDni(usuarioDetails.getDni());
+
+        return usuarioRepository.save(usuario);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByEmail(username);
         if (usuario == null) {
@@ -74,9 +89,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public UsuarioDTO getUser(String email) {
-         System.out.println("Aver Aver" + email);
+
         Usuario usuario = usuarioRepository.findByEmail(email);
-       
+
         if (usuario == null) {
             return null;
         }
@@ -95,6 +110,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         List<Usuario> usuarios = usuarioRepository.findAll();
         return usuarios.stream()
                 .map(usuario -> new UsuarioDTO(
+                usuario.getId(),
                 usuario.getDni(),
                 usuario.getNombre(),
                 usuario.getApellido(),
@@ -104,30 +120,16 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void eliminarUsuario(UUID id) throws MyException {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new MyException("Usuario no encontrado con id: " + id));
+        usuarioRepository.delete(usuario);
+    }
+
     public void validaciones(UsuarioRegistroDTO registroDTO) throws MyException {
         List<UsuarioDTO> usuarios = listarUsuarios();
 
-        if (registroDTO.getDni() == null) {
-            throw new MyException("El DNI no puede ser nulo");
-        }
-        if (registroDTO.getNombre().isEmpty() || registroDTO.getNombre() == null) {
-            throw new MyException("El nombre no puede ser nulo o estar vacío");
-        }
-        if (registroDTO.getApellido().isEmpty() || registroDTO.getApellido() == null) {
-            throw new MyException("El apellido no puede ser nulo o estar vacío");
-        }
-        if (registroDTO.getNombre().isEmpty() || registroDTO.getNombre() == null) {
-            throw new MyException("El nombre no puede ser nulo o estar vacío");
-        }
-        if (registroDTO.getEmail().isEmpty() || registroDTO.getEmail() == null) {
-            throw new MyException("El Email no puede ser nulo o estar vacío");
-        }
-        if (registroDTO.getContra().isEmpty() || registroDTO.getContra() == null) {
-            throw new MyException("Ingrese la contraseña");
-        }
-        if (registroDTO.getContra().length() < 8) {
-            throw new MyException("La contraseña debe tener más de 8 caracteres");
-        }
         for (UsuarioDTO usuario : usuarios) {
 
             if (Objects.equals(registroDTO.getDni(), usuario.getDni())) {
@@ -137,6 +139,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             if (registroDTO.getEmail().equals(usuario.getEmail())) {
                 throw new MyException("Nombre de Usuario ya existe");
             }
+            
         }
 
     }

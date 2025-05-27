@@ -5,7 +5,7 @@
  */
 package com.IrishBackOffice.ART.entities;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,14 +19,16 @@ import java.util.List;
  */
 @Entity
 public class Art {
- @Id
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idART;
-     private String nombreART;
-     private String nombreAnalista;
-     private String apellidoAnalista;
-     
-     @OneToMany(mappedBy = "art")
+    private String nombreART;
+    private String nombreAnalista;
+    private String apellidoAnalista;
+
+    @OneToMany(mappedBy = "art")
+    @JsonIgnore
     private List<Siniestro> siniestros;
 
     public Art() {
@@ -56,8 +58,6 @@ public class Art {
         this.apellidoAnalista = apellidoAnalista;
     }
 
-    
-    
     public Long getIdART() {
         return idART;
     }
@@ -81,6 +81,5 @@ public class Art {
     public void setSiniestros(List<Siniestro> siniestros) {
         this.siniestros = siniestros;
     }
-     
-     
+
 }

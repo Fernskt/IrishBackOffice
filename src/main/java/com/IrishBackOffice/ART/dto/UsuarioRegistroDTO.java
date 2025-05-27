@@ -7,6 +7,10 @@ package com.IrishBackOffice.ART.dto;
 
 import com.IrishBackOffice.ART.entities.Siniestro;
 import com.IrishBackOffice.ART.enums.Rol;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -15,11 +19,24 @@ import java.util.List;
  */
 public class UsuarioRegistroDTO {
 
+@NotNull(message = "El DNI es obligatorio")
     private Long dni;
+    
+    @NotEmpty(message = "El nombre es obligatorio")
     private String nombre;
+    
+    @NotEmpty(message = "El apellido es obligatorio")
     private String apellido;
+    
+    @NotNull(message = "El rol no puede ser nulo")
     private Rol rol;
+    
+    @NotEmpty(message = "El email es obligatorio")
+    @Email(message = "El email debe tener un formato válido")
     private String email;
+    
+    @NotEmpty(message = "La contraseña es obligatoria")
+    @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
     private String contra;
     private List<Siniestro> siniestros;
     

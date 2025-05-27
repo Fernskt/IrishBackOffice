@@ -1,7 +1,11 @@
 package com.IrishBackOffice.ART.controllers;
+import com.IrishBackOffice.ART.dto.SiniestroDTO;
 import com.IrishBackOffice.ART.entities.Siniestro;
 import com.IrishBackOffice.ART.exceptions.MyException;
 import com.IrishBackOffice.ART.iservice.SiniestroService;
+import jakarta.validation.Valid;
+import java.util.Map;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,16 +37,16 @@ public class SiniestroController {
                 return ResponseEntity.notFound().build();
             }
             return ResponseEntity.ok(siniestro);
-        } catch (Exception e) {
+        } catch (MyException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body("Error al obtener el siniestro");
         }
     }
 
     @PostMapping
-    public ResponseEntity<?> crearSiniestro(@RequestBody Siniestro siniestro) {
+    public ResponseEntity<?> crearSiniestro(@RequestBody SiniestroDTO siniestroDTO) {
         try {
-            Siniestro nuevoSiniestro = siniestroService.save(siniestro);
+            Siniestro nuevoSiniestro = siniestroService.save(siniestroDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(nuevoSiniestro);
         } catch (MyException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
@@ -52,30 +56,32 @@ public class SiniestroController {
         }
     }
 
-    // PUT: Actualizar siniestro
-   /* @PutMapping("/{id}")
+   // PUT: Actualizar siniestro
+ @PutMapping("/{id}")
     public ResponseEntity<?> actualizarSiniestro(
             @PathVariable Long id,
-            @RequestBody Siniestro siniestroActualizado) {
+            @Valid @RequestBody SiniestroDTO siniestroDTO) {
         try {
-            Siniestro siniestroDB = siniestroService.findById(id);
-            if (siniestroDB == null) {
-                return ResponseEntity.notFound().build();
-            }
-           
-            siniestroDB.setDescripcion(siniestroActualizado.getDescripcion());
-            siniestroDB.setFecha(siniestroActualizado.getFecha());
+           Siniestro siniestroActualizado = siniestroService.editarSiniestro(siniestroDTO, id);
+            return ResponseEntity.ok(siniestroActualizado);
             
-
-            Siniestro siniestroGuardado = siniestroService.save(siniestroDB);
-            return ResponseEntity.ok(siniestroGuardado);
         } catch (MyException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body("Error al actualizar el siniestro");
         }
-    }*/
+    }
+    
+     @PatchMapping("/{id}/analista")
+    public ResponseEntity<Void> asignarAnalista(
+        @PathVariable Long id,
+        @RequestBody Map<String, UUID> body
+    ) throws MyException {
+        UUID analistaId = body.get("analistaId");  // null o UUID
+        siniestroService.asignarAnalista(id, analistaId);
+        return ResponseEntity.noContent().build();
+    }
 
     // DELETE: Eliminar siniestro
       @DeleteMapping("/{id}")
@@ -87,7 +93,7 @@ public class SiniestroController {
             }
             siniestroService.delete(siniestro);
             return ResponseEntity.noContent().build(); // 204 No Content
-        } catch (Exception e) {
+        } catch (MyException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body("Error al eliminar el siniestro");
         }

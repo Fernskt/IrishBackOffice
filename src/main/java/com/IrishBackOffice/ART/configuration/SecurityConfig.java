@@ -7,6 +7,7 @@ import com.IrishBackOffice.ART.service.UsuarioServiceImpl;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
+import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,15 +22,20 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
     
-    @Autowired UsuarioServiceImpl usuarioService;
+    @Autowired 
+    UsuarioServiceImpl usuarioService;
 
     /**
+     * Configuración del proveedor de autenticación
      * @param usuarioService
      * @param passwordEncoder
      * @return 
@@ -44,10 +50,11 @@ public class SecurityConfig {
     }
 
     /**
+     * Configuración del AuthenticationManager
      * @param http
      * @param authProvider
      * @return 
-     * @throws java.lang.Exception 
+     * @throws java.lang.Exception
      */
     @Bean
     public AuthenticationManager authManager(HttpSecurity http,
@@ -59,10 +66,28 @@ public class SecurityConfig {
     }
 
     /**
+     * Configuración de CORS
+     * @return 
+     */
+@Bean
+public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH",  "DELETE", "OPTIONS"));
+    configuration.setAllowedHeaders(Arrays.asList("*"));
+    configuration.setAllowCredentials(true);
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
+}
+
+
+    /**
+     * Configuración del SecurityFilterChain
      * @param http
      * @param authManager
      * @return 
-     * @throws java.lang.Exception
+     * @throws java.lang.Exception 
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
@@ -70,15 +95,16 @@ public class SecurityConfig {
             throws Exception {
 
         http
+                .cors(Customizer.withDefaults()) // Habilitar CORS
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                // Endpoints públicos
-                .requestMatchers("/api/auth/**", "/js/**", "/css/**", "/img/**").permitAll()
-                // El resto, con token
-                .anyRequest().authenticated()
+                    // Endpoints públicos
+                    .requestMatchers("/api/auth/**", "/js/**", "/css/**", "/img/**").permitAll()
+                    // El resto, con token
+                    .anyRequest().authenticated()
                 );
 
         Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);

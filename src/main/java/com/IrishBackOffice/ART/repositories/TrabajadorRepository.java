@@ -5,15 +5,14 @@
  */
 package com.IrishBackOffice.ART.repositories;
 
-import com.IrishBackOffice.ART.entities.Art;
+import com.IrishBackOffice.ART.entities.Trabajador;
+import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Pc
  */
-@Repository
-public interface AtrRepository extends JpaRepository<Art, Long> {
+public interface TrabajadorRepository extends JpaRepository<Trabajador, UUID>{
     
 }

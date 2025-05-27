@@ -5,7 +5,7 @@
  */
 package com.IrishBackOffice.ART.repositories;
 
-import com.IrishBackOffice.ART.entities.Usuario;
+import com.IrishBackOffice.ART.entities.Auditor;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,8 +15,6 @@ import org.springframework.stereotype.Repository;
  * @author Pc
  */
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
+public interface AuditorRepository extends JpaRepository<Auditor , UUID> {
     
-    public Usuario findByEmail(String email);
-  
 }
