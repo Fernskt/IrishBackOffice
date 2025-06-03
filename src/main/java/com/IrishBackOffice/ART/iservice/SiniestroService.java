@@ -24,4 +24,11 @@ public interface SiniestroService {
     void delete(Siniestro siniestro) throws MyException;
     
      public void asignarAnalista(Long id, UUID analistaId) throws MyException;
+     
+     List<Siniestro> listarPorFiltrosOpcionales(
+        String tipoStro, 
+        String tipoInvestigacion, 
+        String resultado,
+         Long artId
+    );
 }

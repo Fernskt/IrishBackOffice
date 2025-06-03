@@ -15,10 +15,12 @@ import com.IrishBackOffice.ART.repositories.AuditorRepository;
 import com.IrishBackOffice.ART.repositories.SiniestroRepository;
 import com.IrishBackOffice.ART.repositories.TrabajadorRepository;
 import com.IrishBackOffice.ART.repositories.UsuarioRepository;
+import com.IrishBackOffice.ART.specifications.SiniestroSpecification;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -185,6 +187,32 @@ public class SiniestroServiceImpl implements SiniestroService {
             sin.setAnalista(null);
         }
         siniestroRepository.save(sin);
+    }
+    
+    @Override
+    public List<Siniestro> listarPorFiltrosOpcionales(
+        String tipoStro, 
+        String tipoInvestigacion, 
+        String resultado,
+        Long artId
+    ) {
+        Specification<Siniestro> spec = Specification.where(null);
+
+        if (tipoStro != null && !tipoStro.trim().isEmpty()) {
+            spec = spec.and(SiniestroSpecification.tieneTipoStro(tipoStro));
+        }
+        if (tipoInvestigacion != null && !tipoInvestigacion.trim().isEmpty()) {
+            spec = spec.and(SiniestroSpecification.tieneTipoInvestigacion(tipoInvestigacion));
+        }
+        if (resultado != null && !resultado.trim().isEmpty()) {
+            spec = spec.and(SiniestroSpecification.tieneResultado(resultado));
+        }
+        if (artId != null) {
+            spec = spec.and(SiniestroSpecification.tieneArtId(artId));
+        }
+
+
+        return siniestroRepository.findAll(spec);
     }
 
     private void validaciones(SiniestroDTO siniestroDTO) throws MyException {
