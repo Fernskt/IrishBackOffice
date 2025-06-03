@@ -6,6 +6,8 @@
 package com.IrishBackOffice.ART.specifications;
 
 import com.IrishBackOffice.ART.entities.Siniestro;
+import com.IrishBackOffice.ART.entities.Usuario;
+import java.util.UUID;
 import org.springframework.data.jpa.domain.Specification;
 
 /**
@@ -49,6 +51,14 @@ public class SiniestroSpecification {
             }
             // JOIN implícito a Art y comparación por idART
             return builder.equal(root.get("art").get("idART"), artId);
+        };
+    }
+          public static Specification<Siniestro> tieneAnalistaId(UUID analistaId) {
+        return (root, query, builder) -> {
+            if (analistaId == null) {
+                return builder.conjunction();
+            }
+            return builder.equal(root.get("analista").get("id"), analistaId);
         };
     }
 }

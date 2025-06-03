@@ -33,6 +33,7 @@ public class SiniestroController {
      * @param tipoInvestigacion
      * @param resultado
      * @param artId
+     * @param analistaId
      * @return 
      */
     @GetMapping
@@ -40,7 +41,8 @@ public class SiniestroController {
             @RequestParam(required = false) String tipoStro,
             @RequestParam(required = false) String tipoInvestigacion,
             @RequestParam(required = false) String resultado,
-            @RequestParam(required = false) Long artId
+            @RequestParam(required = false) Long artId,
+            @RequestParam(required = false) UUID analistaId
     ) {
         try {
             // Si todos los filtros están vacíos o en null, traemos la lista completa:
@@ -48,7 +50,8 @@ public class SiniestroController {
                     = (tipoStro == null || tipoStro.trim().isEmpty())
                     && (tipoInvestigacion == null || tipoInvestigacion.trim().isEmpty())
                     && (resultado == null || resultado.trim().isEmpty())
-                    && (artId == null);
+                    && (artId == null)
+                    && (analistaId == null);
 
             if (sinFiltros) {
                 // Llama al método original que devuelve todos los registros
@@ -58,7 +61,7 @@ public class SiniestroController {
 
             // En caso contrario, combinamos los filtros opcionales
             List<Siniestro> filtrados = siniestroService
-                    .listarPorFiltrosOpcionales(tipoStro, tipoInvestigacion, resultado, artId);
+                    .listarPorFiltrosOpcionales(tipoStro, tipoInvestigacion, resultado, artId, analistaId);
             return ResponseEntity.ok(filtrados);
 
         } catch (Exception e) {

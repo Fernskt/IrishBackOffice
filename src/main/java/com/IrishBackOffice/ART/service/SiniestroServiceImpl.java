@@ -194,7 +194,8 @@ public class SiniestroServiceImpl implements SiniestroService {
         String tipoStro, 
         String tipoInvestigacion, 
         String resultado,
-        Long artId
+        Long artId,
+        UUID analistaId
     ) {
         Specification<Siniestro> spec = Specification.where(null);
 
@@ -210,7 +211,9 @@ public class SiniestroServiceImpl implements SiniestroService {
         if (artId != null) {
             spec = spec.and(SiniestroSpecification.tieneArtId(artId));
         }
-
+         if (analistaId != null) {
+            spec = spec.and(SiniestroSpecification.tieneAnalistaId(analistaId));
+        }
 
         return siniestroRepository.findAll(spec);
     }
