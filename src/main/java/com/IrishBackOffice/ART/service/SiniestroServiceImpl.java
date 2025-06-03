@@ -97,6 +97,12 @@ public class SiniestroServiceImpl implements SiniestroService {
     }
 
     @Override
+    public Siniestro findByNumStro(int numStro) throws MyException {
+        return siniestroRepository.findByNumStro(numStro)
+                .orElseThrow(() -> new MyException("No existe siniestro con numStro: " + numStro));
+    }
+
+    @Override
     public List<Siniestro> listarSiniestros() {
         return siniestroRepository.findAll();
     }
@@ -188,14 +194,14 @@ public class SiniestroServiceImpl implements SiniestroService {
         }
         siniestroRepository.save(sin);
     }
-    
+
     @Override
     public List<Siniestro> listarPorFiltrosOpcionales(
-        String tipoStro, 
-        String tipoInvestigacion, 
-        String resultado,
-        Long artId,
-        UUID analistaId
+            String tipoStro,
+            String tipoInvestigacion,
+            String resultado,
+            Long artId,
+            UUID analistaId
     ) {
         Specification<Siniestro> spec = Specification.where(null);
 
@@ -211,7 +217,7 @@ public class SiniestroServiceImpl implements SiniestroService {
         if (artId != null) {
             spec = spec.and(SiniestroSpecification.tieneArtId(artId));
         }
-         if (analistaId != null) {
+        if (analistaId != null) {
             spec = spec.and(SiniestroSpecification.tieneAnalistaId(analistaId));
         }
 

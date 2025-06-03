@@ -6,6 +6,7 @@
 package com.IrishBackOffice.ART.repositories;
 
 import com.IrishBackOffice.ART.entities.Siniestro;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,5 @@ public interface SiniestroRepository
     extends JpaRepository<Siniestro, Long>, 
             JpaSpecificationExecutor<Siniestro> {
     
+     Optional<Siniestro> findByNumStro(int numStro);
 }

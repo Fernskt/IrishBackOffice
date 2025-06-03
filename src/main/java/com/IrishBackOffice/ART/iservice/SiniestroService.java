@@ -22,9 +22,14 @@ public interface SiniestroService {
 
     // Elimina un siniestro
     void delete(Siniestro siniestro) throws MyException;
-
+    
+    //Encontrar Stro por numero
+    Siniestro findByNumStro(int numStro) throws MyException;
+    
+    //asignar analista a siniestro
     public void asignarAnalista(Long id, UUID analistaId) throws MyException;
-
+    
+    //filtros
     List<Siniestro> listarPorFiltrosOpcionales(
             String tipoStro,
             String tipoInvestigacion,
