@@ -5,7 +5,6 @@ import com.IrishBackOffice.ART.entities.Siniestro;
 import com.IrishBackOffice.ART.exceptions.MyException;
 import com.IrishBackOffice.ART.iservice.SiniestroService;
 import jakarta.validation.Valid;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +74,24 @@ public class SiniestroController {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error al listar siniestros");
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<?> crearSiniestro(@RequestBody SiniestroDTO siniestroDTO) {
+        try {
+            Siniestro nuevo = siniestroService.save(siniestroDTO);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(nuevo);
+        } catch (MyException ex) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(ex.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error interno al crear el siniestro: " + ex.getMessage());
         }
     }
 
