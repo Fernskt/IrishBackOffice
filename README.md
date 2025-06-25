@@ -1,11 +1,17 @@
 # Irish Backoffice
 
-**Irish Backoffice** es una aplicación web desarrollada con **Java Spring Boot** y **MySQL** bajo el patrón **MVC**. Su objetivo principal es gestionar y analizar siniestros de manera eficiente, permitiendo que distintos usuarios (administrador y analistas) puedan interactuar con la información de forma segura y escalable.
+**Irish Backoffice** Irish Backoffice es una aplicación empresarial full-stack diseñada para la gestión integral de siniestros. Está compuesta por:
+
+- **Backend RESTful:** en Java Spring Boot (versión 3.x), con Spring Data JPA y MySQL como motor de datos.
+- **Frontend:** en React (v18+), utilizando React Router, React Query y Bootstrap para la interfaz y el manejo asíncrono de datos.
+- **Autenticación y autorización:** con Spring Security y JWT, implementados mediante roles (ADMIN, ANALISTA) para controlar permisos sobre endpoints y vistas.
+
 
 ---
 
 ## Tabla de Contenido
 
+1. [Propósito y Alcance](#proposito-y-alcance)  
 1. [Características Principales](#características-principales)  
 2. [Roles de Usuario](#roles-de-usuario)  
 3. [Tecnologías Utilizadas](#tecnologías-utilizadas)  
@@ -20,48 +26,75 @@
 12. [Contacto](#contacto)
 
 ---
+## Propósito y Alcance
+
+Irish Backoffice nace para abordar los desafíos de la gestión manual de siniestros en organizaciones de ART y prestadores médicos:
+
+- **Problema actual:**  procesos dispersos en hojas de cálculo o sistemas independientes generan demoras, pérdida de trazabilidad y falta de métricas precisas.
+
+- **Solución propuesta:** una plataforma unificada que centraliza cada etapa —desde la carga inicial hasta el cierre del caso— con asignación dinámica, filtros avanzados y reportes en tiempo real.
+
+- **Beneficio clave:** reduce tiempos de gestión, mejora la colaboración entre administradores y analistas, y proporciona visibilidad instantánea del estado y rendimiento de los siniestros.
+
+---
 
 ## Características Principales
 
-- **Gestión de siniestros:** Carga, edición y actualización de siniestros asociados a distintas ART.  
-- **Asignación de siniestros:** El administrador asigna siniestros a uno o varios analistas.  
-- **Múltiples perfiles de usuario:** Dependiendo del rol (Administrador o Analista), se puede acceder a funcionalidades específicas.  
-- **Consulta rápida de casos:** Filtrado por estado (en gestión, vencidos, etc.).  
-- **Reportes y estadísticas básicas:** Permite generar reportes de días de gestión, resultados de casos, nombre de la ART, etc.  
-- **Escalable y seguro:** Construido en **Java Spring Boot** con **Spring Security**, garantizando protección de datos y acceso controlado.
+- **Gestión de siniestros:** alta, edición, eliminación y consulta de casos.  
+- **Asignación dinámica:** el administrador puede asignar uno o varios analistas a cada siniestro.  
+- **Filtros avanzados:** búsqueda por número (numStro), ART, analista, tipo de siniestro, tipo de investigación, resultado y ordenación por fecha de ingreso. 
+- **Reportes y estadísticas:** componentes reutilizables (tablas, formularios, modales), hooks con React Query para sincronización de datos en tiempo real.  
+- **Interfaz modular en React:** Permite generar reportes de días de gestión, resultados de casos, nombre de la ART, etc.  
+- **Escalabilidad y rendimiento:** separación frontend-backend, caché de consultas y revalidación automática tras mutaciones.
 
 ---
 
 ## Roles de Usuario
 
-1. **Administrador**  
+1. **ADMIN**  
    - Visualiza y gestiona **todos** los siniestros (vencidos, en gestión, etc.).  
+   - Registro y gestión de usuarios (Analistas, Auditores). 
    - Crea, edita y elimina **analistas** internos.  
    - Asigna siniestros a los analistas.  
+   - Creación, edición y eliminación de siniestros.  
    - Obtiene reportes globales (estadísticas, filtrado por fechas, analistas y ART).
 
-2. **Analista Interno**  
-   - Visualiza únicamente los siniestros **asignados**.  
-   - Puede actualizar el estado, agregar notas, y marcar los siniestros como gestionados o vencidos.
+2. **ANALISTA**  
+   - Visualiza y edita únicamente los siniestros **asignados**.  
+   - Puede actualizar el estado, agregar notas, y marcar los siniestros como aceptados o rechazados.
 
 ---
 
 ## Tecnologías Utilizadas
 
-- **Java** (versión 8+)
-- **Spring Boot** (MVC, Data JPA, Security)
+- **Backend:**
+
+- **Java 17** (Spring Boot 3.x)
+- **Spring Data JPA** (Especificaciones dinámicas)
 - **MySQL** (Base de datos relacional)
 - **Maven** (Gestión de dependencias)
+- **Spring Security + JWT**
 - **Tomcat embebido** (servidor integrado en Spring Boot)
+
+-**Frontend:**
+
+- **React**
+- **React Query** (caching y sincronización)
+- **React Router v6**
+- **JBootstrap 5**
+- **Redux** (o Context API) para manejo de token JWT
 
 ---
 
 ## Arquitectura del Proyecto
 
-El proyecto sigue la arquitectura **MVC**:
-- **Modelo**: Entidades de JPA (por ejemplo, `Siniestro`, `Usuario`, `Asegurado`).
-- **Vista**: Páginas web (Thymeleaf).
-- **Controlador**: Endpoints REST / controladores que gestionan la lógica de negocio y la interacción con la base de datos.
+┌──────────┐      ┌─────────────┐      ┌───────────┐
+│ Frontend │────▶│  Backend     ─────▶│  MySQL    │
+│  React   │      │ Spring Boot │      │ Base de   │
+└──────────┘      └─────────────┘      │  Datos    │
+                                       └───────────┘
+- **Frontend**: rutas públicas y protegidas, formularios con validación nativa de Bootstrap, tablas con filtros, modales reutilizables y hooks para llamadas a la API.
+- **Backend**: controladores REST (@RestController), servicios con lógica de negocio, repositorios JPA, especificaciones para filtros, seguridad con filtros JWT.
 
 El uso de **Spring Boot** hace que sea modular, fácilmente escalable y con inyección de dependencias.  
 **Spring Security** protege el acceso a cada endpoint según el rol de usuario.
@@ -73,45 +106,24 @@ El uso de **Spring Boot** hace que sea modular, fácilmente escalable y con inye
 En el diagrama de la base de datos se contemplan las siguientes tablas principales:
 
 - **`art`**  
-  Registra las distintas Aseguradoras de Riesgos de Trabajo.
+ - idART, nombreART, datos de analista responsable.
+ - *`@OneToMany`* con *`Siniestro`*.
+
   
-- **`asegurado`**  
-  Información de la persona asegurada o accidentada (CUIT, DNI, nombre, empresa, etc.).  
+- **`Auditor, Trabajador, Asegurado`**  
+  entidades auxiliares con sus propios campos y relaciones con *`Siniestro`*. 
   
 - **`analista_ext`**  
-  Datos de analistas externos (nombre, apellido, localidad, DNI).  
+  Datos de analistas externos (nombre, apellido, localidad, DNI, etc).  
 
 - **`usuario`**  
-  Almacena los datos de los **usuarios internos** (Administrador o Analista), incluyendo `rol`, `email`, `contra`, etc.  
+  - id (UUID), nombre, apellido, dni, rol (ENUM: ADMIN / ANALISTA ), email, contraseña.
+  - Relación @OneToMany con Siniestro (siniestros asignados).
 
 - **`siniestro`**  
-  Núcleo de la aplicación. Contiene la información de cada siniestro (fechas, gravedad, observaciones).  
-  Relacionada con `art` (quién provee la cobertura) y `usuario` (analista asignado).
-
-## Modelo de Datos
-
-El diagrama relacional contempla (entre otras) las siguientes tablas principales:
-
-- **`usuario`**  
-  - Guarda la información de los usuarios (Administrador, Analista Interno).  
-  - Campos ejemplo: `dni`, `nombre`, `apellido`, `email`, `rol`, `contra`, etc.
-
-- **`analista_ext`**  
-  - Tabla pensada para almacenar analistas externos.  
-  - Campos ejemplo: `dni`, `nombre`, `apellido`, `domicilio`, `localidad`, etc.
-
-- **`art`**  
-  - Almacena las distintas Aseguradoras de Riesgos de Trabajo.  
-  - Campos ejemplo: `idart`, `nombreart`.
-
-- **`siniestro`**  
-  - Registra la información de cada siniestro.  
-  - Campos ejemplo: `id_stro`, `num_stro`, `fecha_ingreso`, `fecha_vencimiento`, `gravedad`, etc.  
-  - Se relaciona con `art`, `usuario` (analista interno), e incluso `analista_ext`.
-
-- **`asegurado`**  
-  - Contiene información del asegurado/accidentado.  
-  - Campos ejemplo: `cuit`, `dni`, `nombre`, `apellido`, `empresa`, etc.
+ - Núcleo de la aplicación. Contiene la información de cada siniestro (fechas, gravedad, observaciones).  
+ - idStro, numStro, fechaIngreso, fechaVencimiento, tipoStro, tipoInvestigacion, resultado, lugar, gravedad, observaciones, recupero, esAceptado.
+ - Relaciones: `@ManyToOne` con `Art`, `Usuario` (analista), `Trabajador`; `@OneToOne` con `Asegurado`; `@ManyToOne` con `Auditor`.
 
 ---
 
@@ -170,17 +182,32 @@ El diagrama relacional contempla (entre otras) las siguientes tablas principales
    - Visualiza únicamente los siniestros asignados.
    - Actualiza la información de cada siniestro (estado, observaciones, etc.).
   
-4. **Reportes**
+4. **Asignar analistas:**
 
+   - desde la tabla con <select>Analista</select>.
+
+5. **Ver resumen:**
+
+   - modal o vista de detalle con información completa.
+
+6. **Reportes**
+   - Acceder al módulo de estadísticas en el menú lateral (días de gestión, resultados por ART, etc.).
    - Permite filtrar casos por **estado**, fechas, ART o analista.
    - **Módulo de facturación** (pendiente de desarrollo).
+
+7. **Carga de siniestros:**
+
+   - datos obligatorios, ART, trabajador.
   
 ## Seguridad
 
-   - Spring Security se encarga de la autenticación y autorización.
+   - **Spring Security + JWT** se encarga de la autenticación y autorización de peticiones.
    - Roles principales:
-      - `ADMIN`
-      - `ANALISTA`
+      - `ADMIN`: tiene todos los permisos; 
+      - `ANALISTA`: con permisos limitados según el caso de uso.
+   - **Encriptación BCrypt** para contraseñas.
+   - **Validación de token** en cada petición HTTP (interceptor REST).
+   - **CORS configurado** solo para el dominio del frontend.
    - Los endpoints y vistas se protegen de acuerdo con el rol de cada usuario.
 
 ## Estado del Proyecto y Próximos Pasos
