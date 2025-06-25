@@ -69,30 +69,25 @@ Irish Backoffice nace para abordar los desafíos de la gestión manual de sinies
 
 - **Backend:**
 
-- **Java 17** (Spring Boot 3.x)
-- **Spring Data JPA** (Especificaciones dinámicas)
-- **MySQL** (Base de datos relacional)
-- **Maven** (Gestión de dependencias)
-- **Spring Security + JWT**
-- **Tomcat embebido** (servidor integrado en Spring Boot)
+   - **Java 17** (Spring Boot 3.x)
+   - **Spring Data JPA** (Especificaciones dinámicas)
+   - **MySQL** (Base de datos relacional)
+   - **Maven** (Gestión de dependencias)
+   - **Spring Security + JWT**
+   - **Tomcat embebido** (servidor integrado en Spring Boot)
 
--**Frontend:**
+- **Frontend:**
 
-- **React**
-- **React Query** (caching y sincronización)
-- **React Router v6**
-- **JBootstrap 5**
-- **Redux** (o Context API) para manejo de token JWT
+   - **React**
+   - **React Query** (caching y sincronización)
+   - **React Router v6**
+   - **JBootstrap 5**
+   - **Redux** (o Context API) para manejo de token JWT
 
 ---
 
 ## Arquitectura del Proyecto
 
-┌──────────┐      ┌─────────────┐      ┌───────────┐
-│ Frontend │────▶│  Backend     ─────▶│  MySQL    │
-│  React   │      │ Spring Boot │      │ Base de   │
-└──────────┘      └─────────────┘      │  Datos    │
-                                       └───────────┘
 - **Frontend**: rutas públicas y protegidas, formularios con validación nativa de Bootstrap, tablas con filtros, modales reutilizables y hooks para llamadas a la API.
 - **Backend**: controladores REST (@RestController), servicios con lógica de negocio, repositorios JPA, especificaciones para filtros, seguridad con filtros JWT.
 
@@ -106,8 +101,8 @@ El uso de **Spring Boot** hace que sea modular, fácilmente escalable y con inye
 En el diagrama de la base de datos se contemplan las siguientes tablas principales:
 
 - **`art`**  
- - idART, nombreART, datos de analista responsable.
- - *`@OneToMany`* con *`Siniestro`*.
+   - idART, nombreART, datos de analista responsable.
+   - *`@OneToMany`* con *`Siniestro`*.
 
   
 - **`Auditor, Trabajador, Asegurado`**  
@@ -121,9 +116,9 @@ En el diagrama de la base de datos se contemplan las siguientes tablas principal
   - Relación @OneToMany con Siniestro (siniestros asignados).
 
 - **`siniestro`**  
- - Núcleo de la aplicación. Contiene la información de cada siniestro (fechas, gravedad, observaciones).  
- - idStro, numStro, fechaIngreso, fechaVencimiento, tipoStro, tipoInvestigacion, resultado, lugar, gravedad, observaciones, recupero, esAceptado.
- - Relaciones: `@ManyToOne` con `Art`, `Usuario` (analista), `Trabajador`; `@OneToOne` con `Asegurado`; `@ManyToOne` con `Auditor`.
+   - Núcleo de la aplicación. Contiene la información de cada siniestro (fechas, gravedad, observaciones).  
+   - idStro, numStro, fechaIngreso, fechaVencimiento, tipoStro, tipoInvestigacion, resultado, lugar, gravedad, observaciones, recupero, esAceptado.
+   - Relaciones: `@ManyToOne` con `Art`, `Usuario` (analista), `Trabajador`; `@OneToOne` con `Asegurado`; `@ManyToOne` con `Auditor`.
 
 ---
 
