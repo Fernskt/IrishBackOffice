@@ -20,6 +20,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -196,12 +199,13 @@ public class SiniestroServiceImpl implements SiniestroService {
     }
 
     @Override
-    public List<Siniestro> listarPorFiltrosOpcionales(
+    public Page<Siniestro> listarPorFiltrosOpcionales(
             String tipoStro,
             String tipoInvestigacion,
             String resultado,
             Long artId,
-            UUID analistaId
+            UUID analistaId,
+            Pageable pageable
     ) {
         Specification<Siniestro> spec = Specification.where(null);
 
@@ -221,7 +225,7 @@ public class SiniestroServiceImpl implements SiniestroService {
             spec = spec.and(SiniestroSpecification.tieneAnalistaId(analistaId));
         }
 
-        return siniestroRepository.findAll(spec);
+        return siniestroRepository.findAll(spec, pageable);
     }
 
     private void validaciones(SiniestroDTO siniestroDTO) throws MyException {

@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,13 +32,17 @@ public class SiniestroController {
      *
      * Si no envías ningún parámetro, devuelve todos los siniestros
      * (listarSiniestros).Si envías al menos uno, combina todos los filtros
- (listarPorFiltrosOpcionales).
+     * (listarPorFiltrosOpcionales).
+     *
      * @param tipoStro
      * @param tipoInvestigacion
      * @param resultado
      * @param artId
      * @param analistaId
-     * @return 
+     * @param page
+     * @param size
+     * @param sortDir
+     * @return
      */
     @GetMapping
     public ResponseEntity<?> listarSiniestros(
@@ -42,49 +50,34 @@ public class SiniestroController {
             @RequestParam(required = false) String tipoInvestigacion,
             @RequestParam(required = false) String resultado,
             @RequestParam(required = false) Long artId,
-            @RequestParam(required = false) UUID analistaId
+            @RequestParam(required = false) UUID analistaId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "asc") String sortDir
     ) {
         try {
-            // Si todos los filtros están vacíos o en null, traemos la lista completa:
-            boolean sinFiltros
-                    = (tipoStro == null || tipoStro.trim().isEmpty())
-                    && (tipoInvestigacion == null || tipoInvestigacion.trim().isEmpty())
-                    && (resultado == null || resultado.trim().isEmpty())
-                    && (artId == null)
-                    && (analistaId == null);
+            Sort sort = Sort.by("fechaIngreso");
+            sort = "desc".equalsIgnoreCase(sortDir) ? sort.descending() : sort.ascending();
+            Pageable pageable = PageRequest.of(page, size, sort);
 
-            if (sinFiltros) {
-                // Llama al método original que devuelve todos los registros
-                List<Siniestro> todos = siniestroService.listarSiniestros();
-                return ResponseEntity.ok(todos);
-            }
+            Page<Siniestro> resultadoPage = siniestroService
+                    .listarPorFiltrosOpcionales(
+                            tipoStro,
+                            tipoInvestigacion,
+                            resultado,
+                            artId,
+                            analistaId,
+                            pageable
+                    );
 
-            // En caso contrario, combinamos los filtros opcionales
-            List<Siniestro> filtrados = siniestroService
-                    .listarPorFiltrosOpcionales(tipoStro, tipoInvestigacion, resultado, artId, analistaId);
-            return ResponseEntity.ok(filtrados);
-
+            return ResponseEntity.ok(resultadoPage);
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al listar o filtrar siniestros");
+                    .body("Error al listar siniestros");
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> obtenerSiniestro(@PathVariable Long id) {
-        try {
-            Siniestro siniestro = siniestroService.findById(id);
-            if (siniestro == null) {
-                return ResponseEntity.notFound().build();
-            }
-            return ResponseEntity.ok(siniestro);
-        } catch (MyException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al obtener el siniestro");
-        }
-    }
-    
     @GetMapping("/numero/{numStro}")
     public ResponseEntity<?> obtenerPorNumStro(@PathVariable int numStro) {
         try {
@@ -92,23 +85,10 @@ public class SiniestroController {
             return ResponseEntity.ok(sin);
         } catch (MyException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                 .body("No se encontró siniestro con número: " + numStro);
+                    .body("No se encontró siniestro con número: " + numStro);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body("Error al buscar siniestro por numStro");
-        }
-    }
-
-    @PostMapping
-    public ResponseEntity<?> crearSiniestro(@RequestBody SiniestroDTO siniestroDTO) {
-        try {
-            Siniestro nuevoSiniestro = siniestroService.save(siniestroDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoSiniestro);
-        } catch (MyException ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al crear el siniestro");
+                    .body("Error al buscar siniestro por numStro");
         }
     }
 

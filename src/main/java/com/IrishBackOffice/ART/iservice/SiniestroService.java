@@ -5,6 +5,8 @@ import com.IrishBackOffice.ART.entities.Siniestro;
 import com.IrishBackOffice.ART.exceptions.MyException;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface SiniestroService {
 
@@ -22,19 +24,20 @@ public interface SiniestroService {
 
     // Elimina un siniestro
     void delete(Siniestro siniestro) throws MyException;
-    
+
     //Encontrar Stro por numero
     Siniestro findByNumStro(int numStro) throws MyException;
-    
+
     //asignar analista a siniestro
     public void asignarAnalista(Long id, UUID analistaId) throws MyException;
-    
+
     //filtros
-    List<Siniestro> listarPorFiltrosOpcionales(
+    Page<Siniestro> listarPorFiltrosOpcionales(
             String tipoStro,
             String tipoInvestigacion,
             String resultado,
             Long artId,
-            UUID analistaId
+            UUID analistaId,
+            Pageable pageable
     );
 }
