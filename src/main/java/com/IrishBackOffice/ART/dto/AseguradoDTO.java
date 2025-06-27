@@ -23,6 +23,8 @@ public class AseguradoDTO {
     private String email;
 
     private String empresa;
+    
+    private String nombreFantasia;
 
     private String prestadorMedico;
     
@@ -30,6 +32,7 @@ public class AseguradoDTO {
     private List<ContactoAseguradoDTO> contactosAsegurado;
 
     // Getters y Setters
+
     public Long getIdAsegurado() {
         return idAsegurado;
     }
@@ -86,6 +89,14 @@ public class AseguradoDTO {
         this.empresa = empresa;
     }
 
+    public String getNombreFantasia() {
+        return nombreFantasia;
+    }
+
+    public void setNombreFantasia(String nombreFantasia) {
+        this.nombreFantasia = nombreFantasia;
+    }
+
     public String getPrestadorMedico() {
         return prestadorMedico;
     }
@@ -93,11 +104,13 @@ public class AseguradoDTO {
     public void setPrestadorMedico(String prestadorMedico) {
         this.prestadorMedico = prestadorMedico;
     }
-    
-     public List<ContactoAseguradoDTO> getContactosAsegurado() {
+
+    public List<ContactoAseguradoDTO> getContactosAsegurado() {
         return contactosAsegurado;
     }
+
     public void setContactosAsegurado(List<ContactoAseguradoDTO> contactosAsegurado) {
         this.contactosAsegurado = contactosAsegurado;
     }
+    
 }

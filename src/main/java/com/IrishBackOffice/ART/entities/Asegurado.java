@@ -36,6 +36,7 @@ public class Asegurado {
     private String telefono2;
     private String email;
     private String empresa;
+    private String nombreFantasia;
     private String prestadorMedico;
     
     @OneToMany(mappedBy = "asegurado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -48,7 +49,7 @@ public class Asegurado {
     public Asegurado() {
     }
 
-    public Asegurado(Long idAsegurado, String nombre, Long cuit, String telefono, String telefono2, String email, String empresa, String prestadorMedico, List<ContactoAsegurado> contactosAsegurado, Siniestro stro) {
+    public Asegurado(Long idAsegurado, String nombre, Long cuit, String telefono, String telefono2, String email, String empresa, String nombreFantasia, String prestadorMedico, List<ContactoAsegurado> contactosAsegurado, Siniestro stro) {
         this.idAsegurado = idAsegurado;
         this.nombre = nombre;
         this.cuit = cuit;
@@ -56,30 +57,11 @@ public class Asegurado {
         this.telefono2 = telefono2;
         this.email = email;
         this.empresa = empresa;
+        this.nombreFantasia = nombreFantasia;
         this.prestadorMedico = prestadorMedico;
         this.contactosAsegurado = contactosAsegurado;
         this.stro = stro;
     }
-
-    public List<ContactoAsegurado> getContactosAsegurado() {
-        return contactosAsegurado;
-    }
-
-    public void setContactosAsegurado(List<ContactoAsegurado> contactosAsegurado) {
-        this.contactosAsegurado = contactosAsegurado;
-    }
-
-    
-
-    public String getTelefono2() {
-        return telefono2;
-    }
-
-    public void setTelefono2(String telefono2) {
-        this.telefono2 = telefono2;
-    }
-
-   
 
     public Long getIdAsegurado() {
         return idAsegurado;
@@ -97,7 +79,6 @@ public class Asegurado {
         this.nombre = nombre;
     }
 
-
     public Long getCuit() {
         return cuit;
     }
@@ -112,6 +93,14 @@ public class Asegurado {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public String getTelefono2() {
+        return telefono2;
+    }
+
+    public void setTelefono2(String telefono2) {
+        this.telefono2 = telefono2;
     }
 
     public String getEmail() {
@@ -130,12 +119,28 @@ public class Asegurado {
         this.empresa = empresa;
     }
 
+    public String getNombreFantasia() {
+        return nombreFantasia;
+    }
+
+    public void setNombreFantasia(String nombreFantasia) {
+        this.nombreFantasia = nombreFantasia;
+    }
+
     public String getPrestadorMedico() {
         return prestadorMedico;
     }
 
     public void setPrestadorMedico(String prestadorMedico) {
         this.prestadorMedico = prestadorMedico;
+    }
+
+    public List<ContactoAsegurado> getContactosAsegurado() {
+        return contactosAsegurado;
+    }
+
+    public void setContactosAsegurado(List<ContactoAsegurado> contactosAsegurado) {
+        this.contactosAsegurado = contactosAsegurado;
     }
 
     public Siniestro getStro() {
@@ -145,7 +150,5 @@ public class Asegurado {
     public void setStro(Siniestro stro) {
         this.stro = stro;
     }
-    
-    
-    
+
 }
