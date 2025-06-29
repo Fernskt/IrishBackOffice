@@ -44,11 +44,10 @@ public class Asegurado {
     private String prestadorMedico;
 
     @OneToMany(mappedBy = "asegurado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
     private List<ContactoAsegurado> contactosAsegurado;
 
    @OneToMany(mappedBy = "asegurado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonIgnore
     private List<Siniestro> siniestros;
 
     public Asegurado() {

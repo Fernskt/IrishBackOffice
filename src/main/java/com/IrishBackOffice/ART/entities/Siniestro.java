@@ -62,7 +62,6 @@ public class Siniestro {
     private Auditor auditor;
     @ManyToOne
     @JoinColumn(name = "idAsegurado")
-    @JsonBackReference
     private Asegurado asegurado;
     @ManyToOne
      @JoinColumn(name = "idTrabajador")

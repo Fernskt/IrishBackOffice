@@ -6,6 +6,7 @@
 package com.IrishBackOffice.ART.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,9 +37,9 @@ public class ContactoAsegurado {
      @Column(nullable = false)
      private String email;
      
-     @ManyToOne
-    @JoinColumn(name="idAsegurado")
-    @JsonBackReference 
+    @ManyToOne
+    @JoinColumn(name="idAsegurado") 
+    @JsonIgnore
     private Asegurado asegurado;
 
     public ContactoAsegurado() {
