@@ -23,8 +23,13 @@ public class AuditorDTO {
     private String localidad;
 
     private String domicilio;
+    
+    private String telefono;
+    
+    private String telefono2;
 
     // Getters y Setters
+
     public UUID getId() {
         return id;
     }
@@ -80,4 +85,21 @@ public class AuditorDTO {
     public void setDomicilio(String domicilio) {
         this.domicilio = domicilio;
     }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getTelefono2() {
+        return telefono2;
+    }
+
+    public void setTelefono2(String telefono2) {
+        this.telefono2 = telefono2;
+    }
+   
 }

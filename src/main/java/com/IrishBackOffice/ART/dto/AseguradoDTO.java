@@ -25,6 +25,12 @@ public class AseguradoDTO {
     private String empresa;
     
     private String nombreFantasia;
+    
+    private String domicilio;
+    
+    private String localidad;
+    
+    private int cp;
 
     private String prestadorMedico;
     
@@ -112,5 +118,31 @@ public class AseguradoDTO {
     public void setContactosAsegurado(List<ContactoAseguradoDTO> contactosAsegurado) {
         this.contactosAsegurado = contactosAsegurado;
     }
+
+    public String getDomicilio() {
+        return domicilio;
+    }
+
+    public void setDomicilio(String domicilio) {
+        this.domicilio = domicilio;
+    }
+
+    public String getLocalidad() {
+        return localidad;
+    }
+
+    public void setLocalidad(String localidad) {
+        this.localidad = localidad;
+    }
+
+    public int getCp() {
+        return cp;
+    }
+
+    public void setCp(int cp) {
+        this.cp = cp;
+    }
+    
+    
     
 }

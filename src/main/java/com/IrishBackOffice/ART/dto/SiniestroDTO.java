@@ -41,6 +41,7 @@ public class SiniestroDTO {
     private String patologiasInculpables;
     private boolean recupero;
     private boolean esAceptado;
+    private String estado;
 
     private UUID analistaId;
     private UUID auditorId;
@@ -51,7 +52,7 @@ public class SiniestroDTO {
     public SiniestroDTO() {
     }
 
-    public SiniestroDTO(int numStro, String resultado, String tipoStro, LocalDateTime fechaYHoraStro, String lugar_direccion, String lugar_entrecalles, String localidad, String provincia, String observaciones, String mechanicaHecho, String gravedad, String tipoInvestigacion, String nombrePrestadorMedico, String lesiones, String patologiasInculpables, boolean recupero, boolean esAceptado, UUID analistaId, UUID auditorId, Long artId, Long aseguradoId, UUID trabajadorId) {
+    public SiniestroDTO(int numStro, String resultado, String tipoStro, LocalDateTime fechaYHoraStro, String lugar_direccion, String lugar_entrecalles, String localidad, String provincia, String observaciones, String mechanicaHecho, String gravedad, String tipoInvestigacion, String nombrePrestadorMedico, String lesiones, String patologiasInculpables, boolean recupero, boolean esAceptado, String estado, UUID analistaId, UUID auditorId, Long artId, Long aseguradoId, UUID trabajadorId) {
         this.numStro = numStro;
         this.resultado = resultado;
         this.tipoStro = tipoStro;
@@ -69,12 +70,15 @@ public class SiniestroDTO {
         this.patologiasInculpables = patologiasInculpables;
         this.recupero = recupero;
         this.esAceptado = esAceptado;
+        this.estado = estado;
         this.analistaId = analistaId;
         this.auditorId = auditorId;
         this.artId = artId;
         this.aseguradoId = aseguradoId;
         this.trabajadorId = trabajadorId;
     }
+
+
 
     public int getNumStro() {
         return numStro;
@@ -162,6 +166,14 @@ public class SiniestroDTO {
 
     public UUID getTrabajadorId() {
         return trabajadorId;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
     
 }

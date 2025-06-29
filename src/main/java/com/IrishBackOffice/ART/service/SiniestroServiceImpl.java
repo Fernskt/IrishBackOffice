@@ -22,7 +22,6 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -72,6 +71,8 @@ public class SiniestroServiceImpl implements SiniestroService {
         siniestro.setPatologiasInculpables(siniestroDTO.getPatologiasInculpables());
         siniestro.setRecupero(siniestroDTO.isRecupero());
         siniestro.setEsAceptado(siniestroDTO.isEsAceptado());
+        
+        siniestro.setEstado("En Gestión");
 
         // 3. Fechas de ingreso y vencimiento
         LocalDateTime fechaIngreso = LocalDateTime.now();

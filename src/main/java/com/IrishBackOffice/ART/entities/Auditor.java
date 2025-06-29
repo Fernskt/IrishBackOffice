@@ -23,6 +23,8 @@ public class Auditor extends Persona {
      @Column(nullable = false)
     private String localidad;
     private String domicilio;
+    private String telefono;
+    private String telefono2;
     
     @OneToMany(mappedBy = "auditor")
     private List<Siniestro> siniestros;
@@ -30,19 +32,13 @@ public class Auditor extends Persona {
     public Auditor() {
     }
 
-    public Auditor(int cp, String localidad, String domicilio, List<Siniestro> siniestros, Long dni, String nombre, String apellido) {
+    public Auditor(int cp, String localidad, String domicilio, String telefono, String telefono2, List<Siniestro> siniestros, Long dni, String nombre, String apellido) {
         super(dni, nombre, apellido);
         this.cp = cp;
         this.localidad = localidad;
         this.domicilio = domicilio;
-        this.siniestros = siniestros;
-    }
-
-    public List<Siniestro> getSiniestros() {
-        return siniestros;
-    }
-
-    public void setSiniestros(List<Siniestro> siniestros) {
+        this.telefono = telefono;
+        this.telefono2 = telefono2;
         this.siniestros = siniestros;
     }
 
@@ -70,4 +66,29 @@ public class Auditor extends Persona {
         this.domicilio = domicilio;
     }
 
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getTelefono2() {
+        return telefono2;
+    }
+
+    public void setTelefono2(String telefono2) {
+        this.telefono2 = telefono2;
+    }
+
+    public List<Siniestro> getSiniestros() {
+        return siniestros;
+    }
+
+    public void setSiniestros(List<Siniestro> siniestros) {
+        this.siniestros = siniestros;
+    }
+    
+    
 }

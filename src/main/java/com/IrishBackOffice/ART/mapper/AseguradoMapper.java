@@ -8,9 +8,11 @@ import java.util.stream.Collectors;
 
 @Component
 public class AseguradoMapper {
-    
-      public ContactoAseguradoDTO toDTO(ContactoAsegurado entity) {
-        if (entity == null) return null;
+
+    public ContactoAseguradoDTO toDTO(ContactoAsegurado entity) {
+        if (entity == null) {
+            return null;
+        }
         ContactoAseguradoDTO dto = new ContactoAseguradoDTO();
         dto.setIdContactoAsegurado(entity.getIdContactoAsegurado());
         dto.setNombre(entity.getNombre());
@@ -24,7 +26,9 @@ public class AseguradoMapper {
     }
 
     public ContactoAsegurado toEntity(ContactoAseguradoDTO dto) {
-        if (dto == null) return null;
+        if (dto == null) {
+            return null;
+        }
         ContactoAsegurado entity = new ContactoAsegurado();
         entity.setIdContactoAsegurado(dto.getIdContactoAsegurado());
         entity.setNombre(dto.getNombre());
@@ -38,7 +42,9 @@ public class AseguradoMapper {
     }
 
     public AseguradoDTO toDTO(Asegurado entity) {
-        if (entity == null) return null;
+        if (entity == null) {
+            return null;
+        }
 
         AseguradoDTO dto = new AseguradoDTO();
         dto.setIdAsegurado(entity.getIdAsegurado());
@@ -49,19 +55,25 @@ public class AseguradoMapper {
         dto.setEmail(entity.getEmail());
         dto.setEmpresa(entity.getEmpresa());
         dto.setPrestadorMedico(entity.getPrestadorMedico());
-         // mapear contactos
+        dto.setNombreFantasia(entity.getNombreFantasia());
+        dto.setDomicilio(entity.getDomicilio());
+        dto.setLocalidad(entity.getLocalidad());
+        dto.setCp(entity.getCp());
+        // mapear contactos
         if (entity.getContactosAsegurado() != null) {
             dto.setContactosAsegurado(
-                entity.getContactosAsegurado().stream()
-                    .map(this::toDTO)
-                    .collect(Collectors.toList())
+                    entity.getContactosAsegurado().stream()
+                            .map(this::toDTO)
+                            .collect(Collectors.toList())
             );
         }
         return dto;
     }
 
     public Asegurado toEntity(AseguradoDTO dto) {
-        if (dto == null) return null;
+        if (dto == null) {
+            return null;
+        }
 
         Asegurado entity = new Asegurado();
         entity.setIdAsegurado(dto.getIdAsegurado());
@@ -72,16 +84,20 @@ public class AseguradoMapper {
         entity.setEmail(dto.getEmail());
         entity.setEmpresa(dto.getEmpresa());
         entity.setPrestadorMedico(dto.getPrestadorMedico());
+        entity.setNombreFantasia(dto.getNombreFantasia());
+        entity.setDomicilio(dto.getDomicilio());
+        entity.setLocalidad(dto.getLocalidad());
+        entity.setCp(dto.getCp());
         // mapear contactos
         if (dto.getContactosAsegurado() != null) {
             entity.setContactosAsegurado(
-                dto.getContactosAsegurado().stream()
-                    .map(contDto -> {
-                        ContactoAsegurado cont = toEntity(contDto);
-                        cont.setAsegurado(entity);
-                        return cont;
-                    })
-                    .collect(Collectors.toList())
+                    dto.getContactosAsegurado().stream()
+                            .map(contDto -> {
+                                ContactoAsegurado cont = toEntity(contDto);
+                                cont.setAsegurado(entity);
+                                return cont;
+                            })
+                            .collect(Collectors.toList())
             );
         }
         return entity;

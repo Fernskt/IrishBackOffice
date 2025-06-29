@@ -5,6 +5,9 @@
  */
 package com.IrishBackOffice.ART.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +15,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
 
 /**
@@ -46,6 +48,7 @@ public class Siniestro {
     private String nombrePrestadorMedico;
     private String lesiones;
     private String patologiasInculpables;
+    private String estado;
     private boolean recupero;
     private boolean esAceptado;
      @ManyToOne
@@ -57,8 +60,9 @@ public class Siniestro {
     @ManyToOne
      @JoinColumn(name = "idAuditor")
     private Auditor auditor;
-    @OneToOne(mappedBy = "stro")
-     @JoinColumn(name = "idAsegurado")
+    @ManyToOne
+    @JoinColumn(name = "idAsegurado")
+    @JsonBackReference
     private Asegurado asegurado;
     @ManyToOne
      @JoinColumn(name = "idTrabajador")
@@ -67,7 +71,7 @@ public class Siniestro {
     public Siniestro() {
     }
 
-    public Siniestro(Long idStro, int numStro, LocalDateTime fechaIngreso, LocalDateTime fecha_vencimiento, String resultado, String tipoStro, LocalDateTime fechaYHoraStro, String lugar_direccion, String lugar_entrecalles, String localidad, String provincia, String observaciones, String mechanicaHecho, String gravedad, String tipoInvestigacion, String nombrePrestadorMedico, String lesiones, String patologiasInculpables, boolean recupero, boolean esAceptado, Usuario analista, Art art, Auditor auditor, Asegurado asegurado, Trabajador trabajador) {
+    public Siniestro(Long idStro, int numStro, LocalDateTime fechaIngreso, LocalDateTime fecha_vencimiento, String resultado, String tipoStro, LocalDateTime fechaYHoraStro, String lugar_direccion, String lugar_entrecalles, String localidad, String provincia, String observaciones, String mechanicaHecho, String gravedad, String tipoInvestigacion, String nombrePrestadorMedico, String lesiones, String patologiasInculpables, String estado, boolean recupero, boolean esAceptado, Usuario analista, Art art, Auditor auditor, Asegurado asegurado, Trabajador trabajador) {
         this.idStro = idStro;
         this.numStro = numStro;
         this.fechaIngreso = fechaIngreso;
@@ -86,6 +90,7 @@ public class Siniestro {
         this.nombrePrestadorMedico = nombrePrestadorMedico;
         this.lesiones = lesiones;
         this.patologiasInculpables = patologiasInculpables;
+        this.estado = estado;
         this.recupero = recupero;
         this.esAceptado = esAceptado;
         this.analista = analista;
@@ -96,7 +101,6 @@ public class Siniestro {
     }
 
 
-  
     public Usuario getAnalista() {
         return analista;
     }
@@ -296,6 +300,14 @@ public class Siniestro {
 
     public void setPatologiasInculpables(String patologiasInculpables) {
         this.patologiasInculpables = patologiasInculpables;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
 }

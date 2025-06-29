@@ -5,6 +5,9 @@
  */
 package com.IrishBackOffice.ART.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,9 +15,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import java.util.List;
 
 /**
@@ -23,33 +24,37 @@ import java.util.List;
  */
 @Entity
 public class Asegurado {
-    
-   @Id
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idAsegurado;
-   @Column(nullable = false)
-    private String nombre; 
-   @Column(nullable = false)
-    private Long cuit;   
-   @Column(nullable = false)
+    @Column(nullable = false)
+    private String nombre;
+    @Column(nullable = false)
+    private Long cuit;
+    @Column(nullable = false)
     private String telefono;
     private String telefono2;
     private String email;
     private String empresa;
     private String nombreFantasia;
+    private String domicilio;
+    private String localidad;
+    private int cp;
     private String prestadorMedico;
-    
+
     @OneToMany(mappedBy = "asegurado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<ContactoAsegurado> contactosAsegurado;
-    
-    @OneToOne
-    @JoinColumn(name = "idStro")
-    private Siniestro stro;
+
+   @OneToMany(mappedBy = "asegurado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Siniestro> siniestros;
 
     public Asegurado() {
     }
 
-    public Asegurado(Long idAsegurado, String nombre, Long cuit, String telefono, String telefono2, String email, String empresa, String nombreFantasia, String prestadorMedico, List<ContactoAsegurado> contactosAsegurado, Siniestro stro) {
+    public Asegurado(Long idAsegurado, String nombre, Long cuit, String telefono, String telefono2, String email, String empresa, String nombreFantasia, String domicilio, String localidad, int cp, String prestadorMedico, List<ContactoAsegurado> contactosAsegurado, List<Siniestro> siniestros) {
         this.idAsegurado = idAsegurado;
         this.nombre = nombre;
         this.cuit = cuit;
@@ -58,9 +63,12 @@ public class Asegurado {
         this.email = email;
         this.empresa = empresa;
         this.nombreFantasia = nombreFantasia;
+        this.domicilio = domicilio;
+        this.localidad = localidad;
+        this.cp = cp;
         this.prestadorMedico = prestadorMedico;
         this.contactosAsegurado = contactosAsegurado;
-        this.stro = stro;
+        this.siniestros = siniestros;
     }
 
     public Long getIdAsegurado() {
@@ -143,12 +151,36 @@ public class Asegurado {
         this.contactosAsegurado = contactosAsegurado;
     }
 
-    public Siniestro getStro() {
-        return stro;
+    public List<Siniestro> getSiniestros() {
+        return siniestros;
     }
 
-    public void setStro(Siniestro stro) {
-        this.stro = stro;
+    public void setSiniestros(List<Siniestro> siniestros) {
+        this.siniestros = siniestros;
+    }
+
+    public String getDomicilio() {
+        return domicilio;
+    }
+
+    public void setDomicilio(String domicilio) {
+        this.domicilio = domicilio;
+    }
+
+    public String getLocalidad() {
+        return localidad;
+    }
+
+    public void setLocalidad(String localidad) {
+        this.localidad = localidad;
+    }
+
+    public int getCp() {
+        return cp;
+    }
+
+    public void setCp(int cp) {
+        this.cp = cp;
     }
 
 }
