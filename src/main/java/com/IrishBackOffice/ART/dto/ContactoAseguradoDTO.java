@@ -23,6 +23,8 @@ public class ContactoAseguradoDTO {
 
     @Email(message = "El email no es válido")
     private String email;
+    
+    private AseguradoMiniDTO asegurado;
 
     // getters / setters
 
@@ -74,4 +76,14 @@ public class ContactoAseguradoDTO {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public AseguradoMiniDTO getAsegurado() {
+        return asegurado;
+    }
+
+    public void setAsegurado(AseguradoMiniDTO asegurado) {
+        this.asegurado = asegurado;
+    }
+    
+    
 }
